@@ -1,0 +1,264 @@
+{
+  "name": "Airtable Feedback Summary with Gemini",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appRIv2bJ3bPzAJ7d",
+          "mode": "list",
+          "cachedResultName": "EVENT HUB",
+          "cachedResultUrl": "https://airtable.com/appRIv2bJ3bPzAJ7d"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblgMjygIJ8brliGO",
+          "mode": "list",
+          "cachedResultName": "FEEDBACK TABLE",
+          "cachedResultUrl": "https://airtable.com/appRIv2bJ3bPzAJ7d/tblgMjygIJ8brliGO"
+        },
+        "options": {}
+      },
+      "id": "d9d606f8-179c-4d80-90ab-ed838ec8f00f",
+      "name": "Fetch Feedbacks from Airtable",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -480,
+        1440
+      ],
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "4S7YQYrWeCDkBevc",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "feedbacks",
+        "options": {}
+      },
+      "id": "95597d69-1416-4fda-aafd-cb394bcdec54",
+      "name": "Combine All Feedbacks",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        1440
+      ]
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "models/gemini-3-flash-preview"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Analyze the following customer feedbacks and provide a comprehensive summary including:\n1. Overall sentiment\n2. Key themes and patterns\n3. Common praise points\n4. Areas for improvement\n5. Actionable recommendations\n\nFeedbacks:\n{{ JSON.stringify($json.feedbacks, null, 2) }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "maxOutputTokens": 2048,
+          "temperature": 0.7
+        }
+      },
+      "id": "7b5c2c8e-f649-457e-913f-c7e4bf6b7594",
+      "name": "Generate Summary with Gemini",
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        -32,
+        1440
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "goodlifechijiokenwaozuzu@gmail.com",
+        "subject": "feedback summary",
+        "emailType": "text",
+        "message": "={{ $json['Feedback Summary'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        544,
+        1440
+      ],
+      "id": "56e27043-9fab-4a96-88d1-e0ad97f3c050",
+      "name": "Send a message",
+      "webhookId": "9df56d6c-e0c7-4eee-862b-48130cbc9a69",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "4xGbik9sOcObPfn6",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "24d85052-6da4-4362-a93e-e1c0d0790512",
+              "name": "Feedback Summary",
+              "value": "={{ $json.content.parts[0].text.replace(/[-\\/\\\\*#]/g, \" \").trim() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        320,
+        1440
+      ],
+      "id": "74eeba5b-3634-4231-ad59-595a0fb36fd3",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "content": "FEEDBACK SUBMISSION AND SUMMARY ",
+        "height": 224,
+        "width": 1616,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -816,
+        1408
+      ],
+      "typeVersion": 1,
+      "id": "951787ed-c92f-48f2-82ec-151cdca2441f",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "authentication": "airtableTokenApi",
+        "baseId": {
+          "__rl": true,
+          "value": "https://airtable.com/appRIv2bJ3bPzAJ7d/tblgMjygIJ8brliGO/viwY9Lm5Zd2Wkgq6M?blocks=hide",
+          "mode": "url"
+        },
+        "tableId": {
+          "__rl": true,
+          "value": "https://airtable.com/appRIv2bJ3bPzAJ7d/tblgMjygIJ8brliGO/viwY9Lm5Zd2Wkgq6M/fld8ahe3ve1yIB8uR",
+          "mode": "url"
+        },
+        "triggerField": "FEEDBACK TEXT",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.airtableTrigger",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        1440
+      ],
+      "id": "ffa3c656-cb1d-4691-9328-78ec8f5919b0",
+      "name": "Airtable Trigger",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "4S7YQYrWeCDkBevc",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Fetch Feedbacks from Airtable": {
+      "main": [
+        [
+          {
+            "node": "Combine All Feedbacks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine All Feedbacks": {
+      "main": [
+        [
+          {
+            "node": "Generate Summary with Gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Summary with Gemini": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable Trigger": {
+      "main": [
+        [
+          {
+            "node": "Fetch Feedbacks from Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "c159febd-f4f5-4787-8718-34be6f3a8d75",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0691fca06e6547a651254e07c6ef0c6d2442230007b34f0083d349101bd4ffc2"
+  },
+  "id": "Q34jH12tIw0W5zGU",
+  "tags": []
+}
