@@ -1,0 +1,1173 @@
+{
+  "name": "group 4, assign 2",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6fdd60b4-5858-4c91-a603-99e1154d3b26",
+              "name": "NAME:",
+              "value": "={{ $json.question_R4251v.value }}",
+              "type": "string"
+            },
+            {
+              "id": "459afdb4-23ab-4731-9e20-09cc7912ed2f",
+              "name": "EMAIL:",
+              "value": "={{ $json.question_G1kdaQ.value }}",
+              "type": "string"
+            },
+            {
+              "id": "61a7a196-4177-4861-a312-4c114f90a74f",
+              "name": "INTEREST:",
+              "value": "={{ $json.question_oBgMY5.value }}",
+              "type": "string"
+            },
+            {
+              "id": "227daa46-b753-49f8-bdf1-938d632302c7",
+              "name": "PHONE NUMBER",
+              "value": "={{ $json.question_OPr5Kk.value }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -896,
+        -1424
+      ],
+      "id": "6fa11640-360f-441b-99e2-1a77d4e82a7b",
+      "name": "CLEAN TALLY DATA"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "check-email-exists",
+              "leftValue": "={{ $('CLEAN TALLY DATA').item.json['EMAIL:'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "id": "7238bf34-fdb0-4e1a-b990-8fd69c07b3d4",
+      "name": "Email Found?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -704,
+        -1424
+      ],
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1hJE7jR36g02YbJVdE3x-c_TWiZJmPvV--INNcYcOPUI",
+          "mode": "list",
+          "cachedResultName": "Untitled spreadsheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hJE7jR36g02YbJVdE3x-c_TWiZJmPvV--INNcYcOPUI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hJE7jR36g02YbJVdE3x-c_TWiZJmPvV--INNcYcOPUI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "EMAIL:"
+          ],
+          "schema": [
+            {
+              "id": "NAME:",
+              "displayName": "NAME:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "EMAIL:",
+              "displayName": "EMAIL:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "PHONE NUMBER:",
+              "displayName": "PHONE NUMBER:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "INTEREST:",
+              "displayName": "INTEREST:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "MEMBER STATUS",
+              "displayName": "MEMBER STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "PHONE NUMBER",
+              "displayName": "PHONE NUMBER",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "cd9d0411-6c40-4fa9-b482-932eeb8ac343",
+      "name": "Add to Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -464,
+        -1328
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "3xmBPhsi0lGHyYc8",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Email field is empty",
+        "height": 240,
+        "width": 176
+      },
+      "id": "443efc8b-290e-46e0-a962-1857f4eed978",
+      "name": "Sticky Note 83550b03",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -496,
+        -1360
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## AI Classification\nClassifies subscriber by name and interest using Gemini API via HTTP Request",
+        "height": 296,
+        "width": 216,
+        "color": 5
+      },
+      "id": "8948f8d1-94af-4a3e-8de3-f139d45da51d",
+      "name": "Sticky Note bdfd9a8d",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        -1456
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyDDTWGlXdIHUGK-djtxpyIN77T84PU4gl8",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={   \"contents\": [     {       \"parts\": [         {           \"text\": \"Classify this user into exactly one of these three categories: Beginner, Intermediate, or Professional. use the interest provided.\\n\\nName: {{ $('CLEAN TALLY DATA').item.json['NAME:'] }}\\nInterest:{{ $('CLEAN TALLY DATA').item.json['INTEREST:'] }}\\n\\nReturn ONLY the category name.\"         }       ]     }   ] }",
+        "options": {}
+      },
+      "id": "cb00d156-f8e9-4bc7-9fa0-6e1f699eb144",
+      "name": "Classify via Gemini API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -224,
+        -1328
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1hJE7jR36g02YbJVdE3x-c_TWiZJmPvV--INNcYcOPUI",
+          "mode": "list",
+          "cachedResultName": "MEMBER DATABASE",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hJE7jR36g02YbJVdE3x-c_TWiZJmPvV--INNcYcOPUI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hJE7jR36g02YbJVdE3x-c_TWiZJmPvV--INNcYcOPUI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "NAME:": "={{ $('CLEAN TALLY DATA').item.json['NAME:'] }}",
+            "EMAIL:": "={{ $('CLEAN TALLY DATA').item.json['EMAIL:'] }}",
+            "PHONE NUMBER:": "={{ $('CLEAN TALLY DATA').item.json['PHONE NUMBER'] }}",
+            "INTEREST:": "={{ $('CLEAN TALLY DATA').item.json['INTEREST:'] }}"
+          },
+          "matchingColumns": [
+            "EMAIL:"
+          ],
+          "schema": [
+            {
+              "id": "NAME:",
+              "displayName": "NAME:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EMAIL:",
+              "displayName": "EMAIL:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "PHONE NUMBER:",
+              "displayName": "PHONE NUMBER:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "INTEREST:",
+              "displayName": "INTEREST:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "MEMBER STATUS",
+              "displayName": "MEMBER STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "PHONE NUMBER",
+              "displayName": "PHONE NUMBER",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -464,
+        -1520
+      ],
+      "id": "8adb01b8-001b-4506-a86c-6942162157ec",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "3xmBPhsi0lGHyYc8",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1hJE7jR36g02YbJVdE3x-c_TWiZJmPvV--INNcYcOPUI",
+          "mode": "list",
+          "cachedResultName": "MEMBER DATABASE",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hJE7jR36g02YbJVdE3x-c_TWiZJmPvV--INNcYcOPUI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hJE7jR36g02YbJVdE3x-c_TWiZJmPvV--INNcYcOPUI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "EMAIL:": "={{ $('Add to Sheet').item.json['EMAIL:'] }}",
+            "NAME:": "={{ $('Add to Sheet').item.json['NAME:'] }}",
+            "PHONE NUMBER:": "={{ $('Add to Sheet').item.json['PHONE NUMBER'] }}",
+            "INTEREST:": "={{ $('Add to Sheet').item.json['INTEREST:'] }}",
+            "MEMBER STATUS": "={{ $json.candidates[0].content.parts[0].text }}"
+          },
+          "matchingColumns": [
+            "EMAIL:"
+          ],
+          "schema": [
+            {
+              "id": "NAME:",
+              "displayName": "NAME:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EMAIL:",
+              "displayName": "EMAIL:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "PHONE NUMBER:",
+              "displayName": "PHONE NUMBER:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "INTEREST:",
+              "displayName": "INTEREST:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "MEMBER STATUS",
+              "displayName": "MEMBER STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "PHONE NUMBER",
+              "displayName": "PHONE NUMBER",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -16,
+        -1328
+      ],
+      "id": "450dbbff-6416-4b3c-82ad-f2e430254cc0",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "3xmBPhsi0lGHyYc8",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['EMAIL:'] }}",
+        "subject": "SUBSCRIPTION CONFIRMATION",
+        "message": "=<!DOCTYPE html> \n<html lang=\"en\"> \n<head> \n<meta charset=\"UTF-8\"> \n<meta name=\"viewport\" \ncontent=\"width=device-width, initial-scale=1.0\"> <title>Welcome Email</title> \n<style>     \nbody {         \nfont-family: Arial, sans-serif;         \nbackground-color: #f9f9f9;         \nmargin: 0;         \npadding: 0;         \ncolor: #333333;     \n}     \n.container {         \nmax-width: 600px;         \nmargin: 30px auto;         \nbackground-color: #ffffff;         \nborder-radius: 10px;         \nbox-shadow: 0 4px 10px rgba(0,0,0,0.1);         \noverflow: hidden;     }     \n.header {         \nbackground-color: #4CAF50;         \ncolor: #ffffff;         \ntext-align: center;         \npadding: 30px 20px;     \n}     \n.header h1 {         \nmargin: 0;         \nfont-size: 28px;     \n}     \n.content {         \npadding: 30px 20px;     \n}     \n.content h2 \n{         \ncolor: #4CAF50;     \n}     \n.content p {         \nfont-size: 16px;         \nline-height: 1.6;     \n}     \n.button {         \ndisplay: inline-block;         \nmargin-top: 20px;        \npadding: 12px 25px;         \nbackground-color: #4CAF50;         \ncolor: #ffffff;         \ntext-decoration: none;         \nborder-radius: 5px;         \nfont-weight: bold;     \n}     \n.footer {         \nbackground-color: #f2f2f2;         \ntext-align: center;         \npadding: 20px;         font-size: 14px;         color: #777777;     \n} \n</style> \n</head> \n<body>     \n<div class=\"container\">         \n<div class=\"header\">             \n<h1>Subscription to Tech Academy\n</h1>         \n</div>         \n<div class=\"content\">             \n<h2>Hello {{ $json['NAME:'] }},</h2>             <p>Your subscription for {{ $json['INTEREST:'] }} training was successful and We are thrilled to have you join our academy! Get ready to unlock new skills, engage with expert instructors, and be part of a vibrant learning community.</p>             \n<p>To get started, visit your dashboard and explore the courses available to you.</p>                      </div>         <div class=\"footer\">             <p>&copy; 2026 [Tech Academy]. All rights reserved.</p>         \n</div>     \n</div> \n</body> \n</html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        192,
+        -1328
+      ],
+      "id": "72dd9be1-92e9-46a5-bf7b-2ce0f38635cb",
+      "name": "Send a message",
+      "webhookId": "3ba453fa-200b-4d4d-85fe-2010910920d6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8gFzvvavwYxAHomr",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Append row in sheet').item.json['EMAIL:'] }}",
+        "subject": "WELCOME TO TECH ACADEMY",
+        "message": "=<!DOCTYPE html>  \n<html lang=\"en\">  \n<head>  \n<meta charset=\"UTF-8\">  \n<meta name=\"viewport\"  content=\"width=device-width, initial-scale=1.0\"> <title>Welcome Email</title>  <style>      body {          font-family: Arial, sans-serif;          background-color: #f9f9f9;          margin: 0;          padding: 0;          color: #333333;      }      .container {          max-width: 600px;          margin: 30px auto;          background-color: #ffffff;          border-radius: 10px;          box-shadow: 0 4px 10px rgba(0,0,0,0.1);          overflow: hidden;     }      .header {          background-color: #4CAF50;          color: #ffffff;          text-align: center;          padding: 30px 20px;      }      .header h1 {          margin: 0;          font-size: 28px;      }      .content {          padding: 30px 20px;      }      .content h2  {          color: #4CAF50;      }      .content p {          font-size: 16px;          line-height: 1.6;      }      .button {          display: inline-block;          margin-top: 20px;         padding: 12px 25px;          background-color: #4CAF50;          color: #ffffff;          text-decoration: none;          border-radius: 5px;          font-weight: bold;      }      .footer {          background-color: #f2f2f2;          text-align: center;          padding: 20px;         font-size: 14px;         color: #777777;      }  </style>  </head>  <body>      <div class=\"container\">          <div class=\"header\">              <h1>Welcome to Tech Academy </h1>          </div>          <div class=\"content\">              \n<h2>Hello {{ $('Append row in sheet').item.json['NAME:'] }},\n</h2>             \n<p>Thank you for your interest in {{ $('Append row in sheet').item.json['INTEREST:'] }} {{ $('Classify via Gemini API').item.json.candidates[0].content.parts[0].text }} Level training, our team of  expert instructors will guide you through your training upto expert level and expose your to an endless opportunity to explore the vastness of {{ $('Append row in sheet').item.json['INTEREST:'] }}.</p>              <p> We will be in touch with updates on your onboarding process.</p>\n<p>\nRegards.\n</p>                     \n</div>         <div class=\"footer\">             <p>&copy; 2026 [Tech Academy]. All rights reserved.</p>          </div>      </div>  </body>  </html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        -1328
+      ],
+      "id": "c8e06149-3cc4-4158-84af-d1d4fa7d928b",
+      "name": "Send a message1",
+      "webhookId": "7b7dbf7d-71d9-4beb-89c4-0a596bc9bf1c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8gFzvvavwYxAHomr",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Classify via Gemini API').item.json.candidates[0].content.parts[0].text }}",
+                    "rightValue": "Beginner",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "6c9e10c7-1d25-406c-9ca8-154f44d667c0"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "BEGINNER"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "af78cc91-3e52-4e82-b354-846e1498fd23",
+                    "leftValue": "={{ $('Classify via Gemini API').item.json.candidates[0].content.parts[0].text }}",
+                    "rightValue": "Intermediate",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "INTERMEDIATE"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "2a6e957c-824a-437a-9bf3-723d33a98a0c",
+                    "leftValue": "={{ $('Classify via Gemini API').item.json.candidates[0].content.parts[0].text }}",
+                    "rightValue": "Professional",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PROFESSIONAL"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        608,
+        -1344
+      ],
+      "id": "4194be70-f586-4092-b96d-1eaa03a13acf",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Append row in sheet').item.json['EMAIL:'] }}",
+        "subject": "WELCOME TO TECH ACADEMY",
+        "message": "=<!DOCTYPE html>  \n<html lang=\"en\">  \n<head>  \n<meta charset=\"UTF-8\">  \n<meta name=\"viewport\"  content=\"width=device-width, initial-scale=1.0\"> <title>Welcome Email</title>  \n<style>      body {          font-family: Arial, sans-serif;          background-color: #eef2f7;          margin: 0;          padding: 0;          color: #2c3e50;      }      .container {          max-width: 600px;          margin: 30px auto;          background-color: #ffffff;          border-radius: 10px;          box-shadow: 0 4px 10px rgba(0,0,0,0.1);          overflow: hidden;     }      .header {          background-color: #1e3a8a;          color: #ffd700;          text-align: center;          padding: 30px 20px;      }      .header h1 {          margin: 0;          font-size: 28px;      }      .content {          padding: 30px 20px;      }      .content h2  {          color: #1e3a8a;      }      .content p {          font-size: 16px;          line-height: 1.6;      }      .button {          display: inline-block;          margin-top: 20px;         padding: 12px 25px;          background-color: #ffd700;          color: #ffffff;          text-decoration: none;          border-radius: 5px;          font-weight: bold;      }      .footer {          background-color: #1e3a8a;          text-align: center;          padding: 20px;         font-size: 14px;         color: #777777;      }  </style>  </head>  <body>      <div class=\"container\">          <div class=\"header\">              <h1>Welcome to Tech Academy </h1>          </div>          <div class=\"content\">              \n<h2>Hello {{ $('Append row in sheet').item.json['NAME:'] }},\n</h2>             \n<p>Thank you for your interest in {{ $('Append row in sheet').item.json['INTEREST:'] }} {{ $('Classify via Gemini API').item.json.candidates[0].content.parts[0].text }} Level training, our team of  expert instructors will guide you through your training from beginner upto expert level and expose your to an endless opportunity to explore the vastness of {{ $('Append row in sheet').item.json['INTEREST:'] }}.</p>              <p> We will be in touch with updates on your onboarding process.</p>\n<p>\nRegards.\n</p>                     \n</div>         <div class=\"footer\">             <p>&copy; 2026 [Tech Academy]. All rights reserved.</p>          </div>      </div>  </body>  </html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        -1520
+      ],
+      "id": "ba76bfcd-a795-4301-af3c-9a721bb0dcf9",
+      "name": "Send a message2",
+      "webhookId": "7b7dbf7d-71d9-4beb-89c4-0a596bc9bf1c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8gFzvvavwYxAHomr",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Append row in sheet').item.json['EMAIL:'] }}",
+        "subject": "WELCOME TO TECH ACADEMY",
+        "message": "=<!DOCTYPE html>  \n<html lang=\"en\">  \n<head>  \n<meta charset=\"UTF-8\">  \n<meta name=\"viewport\"  content=\"width=device-width, initial-scale=1.0\"> <title>Welcome Email</title>  <style>      body {          font-family: Arial, sans-serif;          background-color: #f9f9f9;          margin: 0;          padding: 0;          color: #333333;      }      .container {          max-width: 600px;          margin: 30px auto;          background-color: #ffffff;          border-radius: 10px;          box-shadow: 0 4px 10px rgba(0,0,0,0.1);          overflow: hidden;     }      .header {          background-color: #4CAF50;          color: #ffffff;          text-align: center;          padding: 30px 20px;      }      .header h1 {          margin: 0;          font-size: 28px;      }      .content {          padding: 30px 20px;      }      .content h2  {          color: #4CAF50;      }      .content p {          font-size: 16px;          line-height: 1.6;      }      .button {          display: inline-block;          margin-top: 20px;         padding: 12px 25px;          background-color: #4CAF50;          color: #ffffff;          text-decoration: none;          border-radius: 5px;          font-weight: bold;      }      .footer {          background-color: #f2f2f2;          text-align: center;          padding: 20px;         font-size: 14px;         color: #777777;      }  </style>  </head>  <body>      <div class=\"container\">          <div class=\"header\">              <h1>Welcome to Tech Academy </h1>          </div>          <div class=\"content\">              \n<h2>Hello {{ $('Append row in sheet').item.json['NAME:'] }},\n</h2>             \n<p>Thank you for your interest in {{ $('Append row in sheet').item.json['INTEREST:'] }} {{ $('Classify via Gemini API').item.json.candidates[0].content.parts[0].text }} Level training, our team of  expert instructors will guide you through your training upto expert level and expose your to an endless opportunity to explore the vastness of {{ $('Append row in sheet').item.json['INTEREST:'] }}.</p>              <p> We will be in touch with updates on your onboarding process.</p>\n<p>\nRegards.\n</p>                     \n</div>         <div class=\"footer\">             <p>&copy; 2026 [Tech Academy]. All rights reserved.</p>          </div>      </div>  </body>  </html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        -1136
+      ],
+      "id": "abecfcfa-e02a-433b-ac82-b5611d5d8320",
+      "name": "Send a message3",
+      "webhookId": "7b7dbf7d-71d9-4beb-89c4-0a596bc9bf1c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8gFzvvavwYxAHomr",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 7,
+        "unit": "days"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1040,
+        -1328
+      ],
+      "id": "b59075ce-5352-4a92-83d9-ede783f541de",
+      "name": "Wait",
+      "webhookId": "ad62942c-95b7-43a0-89f9-626a9fbdb666"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Append row in sheet').item.json['EMAIL:'] }}",
+        "subject": "A SOFT REMINDER",
+        "message": "=<!DOCTYPE <html>  \n<html lang=\"en\">  \n<head>  \n<meta charset=\"UTF-8\">  \n<meta name=\"viewport\"  content=\"width=device-width, initial-scale=1.0\"> <title>Welcome Email</title>  <style>      body {          font-family: Arial, sans-serif;          background-color: #f9f9f9;          margin: 0;          padding: 0;          color: #333333;      }      .container {          max-width: 600px;          margin: 30px auto;          background-color: #ffffff;          border-radius: 10px;          box-shadow: 0 4px 10px rgba(0,0,0,0.1);          overflow: hidden;     }      .header {          background-color: #4CAF50;          color: #ffffff;          text-align: center;          padding: 30px 20px;      }      .header h1 {          margin: 0;          font-size: 28px;      }      .content {          padding: 30px 20px;      }      .content h2  {          color: #4CAF50;      }      .content p {          font-size: 16px;          line-height: 1.6;      }      .button {          display: inline-block;          margin-top: 20px;         padding: 12px 25px;          background-color: #4CAF50;          color: #ffffff;          text-decoration: none;          border-radius: 5px;          font-weight: bold;      }      .footer {          background-color: #f2f2f2;          text-align: center;          padding: 20px;         font-size: 14px;         color: #777777;      }  </style>  </head>  <body>      <div class=\"container\">          <div class=\"header\">              <h1>Tech Academy </h1>          </div>          <div class=\"content\">              \n<h2>Hello {{ $('Append row in sheet').item.json['NAME:'] }},\n</h2>             \n<p>We are thrilled to announce that your {{ $('Append row in sheet').item.json['INTEREST:'] }} {{ $('Classify via Gemini API').item.json.candidates[0].content.parts[0].text }} Level training, will begin in 24hrs, we are positive that you have all materials ready for this journey as we delve into all the amazing aspects of your training. </p>              <p> We are ecited to have you with us.</p>\n<p>\nRegards.\n</p>                     \n</div>         <div class=\"footer\">             <p>&copy; 2026 [Tech Academy]. All rights reserved.</p>          </div>      </div>  </body>  </html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1248,
+        -1136
+      ],
+      "id": "5f0cf072-4083-4bd3-bb7c-4d4d162c76d2",
+      "name": "Send a message6",
+      "webhookId": "7b7dbf7d-71d9-4beb-89c4-0a596bc9bf1c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8gFzvvavwYxAHomr",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Append row in sheet').item.json['EMAIL:'] }}",
+        "subject": "A SOFT REMINDER",
+        "message": "=<html>  \n<html lang=\"en\">  \n<head>  \n<meta charset=\"UTF-8\">  \n<meta name=\"viewport\"  content=\"width=device-width, initial-scale=1.0\"> <title>Welcome Email</title>  <style>      body {          font-family: Arial, sans-serif;          background-color: #f9f9f9;          margin: 0;          padding: 0;          color: #333333;      }      .container {          max-width: 600px;          margin: 30px auto;          background-color: #ffffff;          border-radius: 10px;          box-shadow: 0 4px 10px rgba(0,0,0,0.1);          overflow: hidden;     }      .header {          background-color: #4CAF50;          color: #ffffff;          text-align: center;          padding: 30px 20px;      }      .header h1 {          margin: 0;          font-size: 28px;      }      .content {          padding: 30px 20px;      }      .content h2  {          color: #4CAF50;      }      .content p {          font-size: 16px;          line-height: 1.6;      }      .button {          display: inline-block;          margin-top: 20px;         padding: 12px 25px;          background-color: #4CAF50;          color: #ffffff;          text-decoration: none;          border-radius: 5px;          font-weight: bold;      }      .footer {          background-color: #f2f2f2;          text-align: center;          padding: 20px;         font-size: 14px;         color: #777777;      }  </style>  </head>  <body>      <div class=\"container\">          <div class=\"header\">              <h1>Tech Academy </h1>          </div>          <div class=\"content\">              \n<h2>Hello {{ $('Append row in sheet').item.json['NAME:'] }},\n</h2>             \n<p>We are thrilled to announce that your {{ $('Append row in sheet').item.json['INTEREST:'] }} {{ $('Classify via Gemini API').item.json.candidates[0].content.parts[0].text }} Level training, will begin in 24hrs, we are positive that you have all materials ready for this journey as we delve into all the amazing aspects of your training. </p>              <p> We are ecited to have you with us.</p>\n<p>\nRegards.\n</p>                     \n</div>         <div class=\"footer\">             <p>&copy; 2026 [Tech Academy]. All rights reserved.</p>          </div>      </div>  </body>  </html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1232,
+        -1328
+      ],
+      "id": "f25c41c9-17c7-4361-9d5c-af08973edd24",
+      "name": "Send a message4",
+      "webhookId": "7b7dbf7d-71d9-4beb-89c4-0a596bc9bf1c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8gFzvvavwYxAHomr",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1040,
+        -1744
+      ],
+      "id": "f854de73-1c00-4260-8d8d-46eb0a2a65c5",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "sendTo": "goodlifenwaozuzu@gmail.com",
+        "subject": "ERROR IN workflow ",
+        "emailType": "text",
+        "message": "HELLO SIR,THERE IS AN ERROR IN GROUP 4 ASSIGNMENT 2 WORKFLOW.PLEASE ATTEND",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -832,
+        -1632
+      ],
+      "id": "5755c376-7a90-4114-b32b-d8b9aa688c87",
+      "name": "Send a message7",
+      "webhookId": "97219c58-8d84-4293-8a44-8e4a7a4122db",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8gFzvvavwYxAHomr",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1040,
+        -1520
+      ],
+      "id": "4425f3e5-2fdf-42b3-a977-08046f1b3bd2",
+      "name": "Wait2",
+      "webhookId": "ad62942c-95b7-43a0-89f9-626a9fbdb666"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1040,
+        -1136
+      ],
+      "id": "fc3182fb-768b-4d43-8181-d1490224775a",
+      "name": "Wait3",
+      "webhookId": "ad62942c-95b7-43a0-89f9-626a9fbdb666"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Append row in sheet').item.json['EMAIL:'] }}",
+        "subject": "A SOFT REMINDER",
+        "message": "=<html>  \n<html lang=\"en\">  \n<head>  \n<meta charset=\"UTF-8\">  \n<meta name=\"viewport\"  content=\"width=device-width, initial-scale=1.0\"> <title>Welcome Email</title>  <style>      body {          font-family: Arial, sans-serif;          background-color: #f9f9f9;          margin: 0;          padding: 0;          color: #333333;      }      .container {          max-width: 600px;          margin: 30px auto;          background-color: #ffffff;          border-radius: 10px;          box-shadow: 0 4px 10px rgba(0,0,0,0.1);          overflow: hidden;     }      .header {          background-color: #4CAF50;          color: #ffffff;          text-align: center;          padding: 30px 20px;      }      .header h1 {          margin: 0;          font-size: 28px;      }      .content {          padding: 30px 20px;      }      .content h2  {          color: #4CAF50;      }      .content p {          font-size: 16px;          line-height: 1.6;      }      .button {          display: inline-block;          margin-top: 20px;         padding: 12px 25px;          background-color: #4CAF50;          color: #ffffff;          text-decoration: none;          border-radius: 5px;          font-weight: bold;      }      .footer {          background-color: #f2f2f2;          text-align: center;          padding: 20px;         font-size: 14px;         color: #777777;      }  </style>  </head>  <body>      <div class=\"container\">          <div class=\"header\">              <h1>Tech Academy </h1>          </div>          <div class=\"content\">              \n<h2>Hello {{ $('Append row in sheet').item.json['NAME:'] }},\n</h2>             \n<p>We are thrilled to announce that your {{ $('Append row in sheet').item.json['INTEREST:'] }} {{ $('Classify via Gemini API').item.json.candidates[0].content.parts[0].text }} Level training, will begin in 24hrs, we are positive that you have all materials ready for this journey as we delve into all the amazing aspects of your training. </p>              <p> We are ecited to have you with us.</p>\n<p>\nRegards.\n</p>                     \n</div>         <div class=\"footer\">             <p>&copy; 2026 [Tech Academy]. All rights reserved.</p>          </div>      </div>  </body>  </html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1248,
+        -1520
+      ],
+      "id": "d97aad27-7dbf-41f7-b75b-865f595814fb",
+      "name": "Send a message5",
+      "webhookId": "7b7dbf7d-71d9-4beb-89c4-0a596bc9bf1c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8gFzvvavwYxAHomr",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1hJE7jR36g02YbJVdE3x-c_TWiZJmPvV--INNcYcOPUI",
+          "mode": "list",
+          "cachedResultName": "MEMBER DATABASE",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hJE7jR36g02YbJVdE3x-c_TWiZJmPvV--INNcYcOPUI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1748620528,
+          "mode": "list",
+          "cachedResultName": "ERROR LOG",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hJE7jR36g02YbJVdE3x-c_TWiZJmPvV--INNcYcOPUI/edit#gid=1748620528"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": 0
+          },
+          "matchingColumns": [
+            "LEAD EMAIL"
+          ],
+          "schema": [
+            {
+              "id": "TIME STAMP",
+              "displayName": "TIME STAMP",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "WORKFLOW",
+              "displayName": "WORKFLOW",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ERROR MESSAGE",
+              "displayName": "ERROR MESSAGE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "LEAD EMAIL",
+              "displayName": "LEAD EMAIL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -832,
+        -1824
+      ],
+      "id": "a5dbcdc8-ae31-49a4-9873-67104e0f684d",
+      "name": "Update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "3xmBPhsi0lGHyYc8",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        400,
+        -1328
+      ],
+      "id": "544acb1c-f2a3-40ba-89d8-77c02338f2a0",
+      "name": "Wait1",
+      "webhookId": "40ee1bb2-dc52-407c-b45d-b81e4cdc34da"
+    },
+    {
+      "parameters": {
+        "formId": "KYBe1V"
+      },
+      "type": "n8n-nodes-tallyforms.tallyTrigger",
+      "typeVersion": 2,
+      "position": [
+        -1088,
+        -1424
+      ],
+      "id": "022d758b-3438-4484-992d-c17a197c88b7",
+      "name": "Tally Trigger",
+      "webhookId": "f6999f33-d209-45e5-ba3e-3fc06bcd5236",
+      "credentials": {
+        "tallyApi": {
+          "id": "7AMJao78G2qvRfL5",
+          "name": "Tally account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Tally Trigger": [
+      {
+        "json": {
+          "id": "DqpYgZp",
+          "formId": "KYBe1V",
+          "formName": "MEMBERSHIP SIGN UP FORM",
+          "respondentId": "rj0o9z2",
+          "createdAt": "2026-04-27T03:22:18.000Z",
+          "question_R4251v": {
+            "label": "Name:",
+            "value": "Goodlife Chijioke Nwaozuzu",
+            "type": "INPUT_TEXT"
+          },
+          "question_oBgMY5": {
+            "label": "Interest:",
+            "value": "SFTWARE TRAINING",
+            "type": "INPUT_TEXT"
+          },
+          "question_G1kdaQ": {
+            "label": "Email:",
+            "value": "goodlifechijiokenwaozuzu@gmail.com",
+            "type": "INPUT_TEXT"
+          },
+          "question_OPr5Kk": {
+            "label": "Phone Number:",
+            "value": "+2347067829448",
+            "type": "INPUT_PHONE_NUMBER"
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "CLEAN TALLY DATA": {
+      "main": [
+        [
+          {
+            "node": "Email Found?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Found?": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Add to Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add to Sheet": {
+      "main": [
+        [
+          {
+            "node": "Classify via Gemini API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify via Gemini API": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message2": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message3": {
+      "main": [
+        [
+          {
+            "node": "Wait3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Send a message4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send a message7",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait3": {
+      "main": [
+        [
+          {
+            "node": "Send a message6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Send a message5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tally Trigger": {
+      "main": [
+        [
+          {
+            "node": "CLEAN TALLY DATA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "c91b20a8-37e8-4e39-afe0-d5b2b018a0d8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "507321e110d6c4cc6ec70c1f7651b89526d383bedcd57f5ccac5f445cc25c175"
+  },
+  "id": "zJD9mTNM1Wzbg5D5",
+  "tags": []
+}
