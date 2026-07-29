@@ -1,0 +1,2031 @@
+{
+  "name": "Gym Sub Renewal",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "GSTV GROUP",
+        "formDescription": "GSTV ENROLLMENT FORM",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "FULL NAME",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "EMAIL ADDRESS",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "PHONE NUMBER",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "SUBSCRIPTION",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Daily"
+                  },
+                  {
+                    "option": "Weekly"
+                  },
+                  {
+                    "option": "Monthly"
+                  },
+                  {
+                    "option": "Yearly"
+                  },
+                  {
+                    "option": "Special"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "PROFILE PICTURE",
+              "fieldType": "file",
+              "multipleFiles": false,
+              "acceptFileTypes": ".jpg, .png"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -384,
+        -384
+      ],
+      "id": "4adf4768-86ee-41fb-addd-a6dc910e3bf7",
+      "name": "On form submission",
+      "webhookId": "c195bdc9-ce5a-4799-a8d0-8158da8c59b2"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appc7YLW56BtT1naL",
+          "mode": "list",
+          "cachedResultName": "Untitled Base",
+          "cachedResultUrl": "https://airtable.com/appc7YLW56BtT1naL"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblLaD1iGtSc1KvAS",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appc7YLW56BtT1naL/tblLaD1iGtSc1KvAS"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "FULL NAMES": "={{ $('On form submission').item.json['FULL NAME'] }}",
+            "PROFILE PICTURE": "=[\n  {\n    \"url\": \"{{ $json.data.url }}\"\n}\n]",
+            "EMAIL ADDRESS": "={{ $('On form submission').item.json['EMAIL ADDRESS'] }}",
+            "PHONE NUMBER": "=+{{ $('On form submission').item.json['PHONE NUMBER'] }}",
+            "SUBSCRIPTION": "={{ $('On form submission').item.json.SUBSCRIPTION }}",
+            "START DATE": "={{ $now.format('dd-MMM-yyyy') }}",
+            "END DATE": "={{ \n  {\n    'yearly': $now.plus({ years: 1 }),\n    'monthly': $now.plus({ months: 1 }),\n    'weekly': $now.plus({ weeks: 1 }),\n    'daily': $now.plus({ days: 1 })\n  }[$('On form submission').item.json.SUBSCRIPTION.toLowerCase().trim]?.toFormat('MM-dd-yyyy') \n  || $now.plus({ months: 1 }).toFormat('MM-dd-yyyy')\n}}\n"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "FULL NAMES",
+              "displayName": "FULL NAMES",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "PROFILE PICTURE",
+              "displayName": "PROFILE PICTURE",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "EMAIL ADDRESS",
+              "displayName": "EMAIL ADDRESS",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "PHONE NUMBER",
+              "displayName": "PHONE NUMBER",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "SUBSCRIPTION",
+              "displayName": "SUBSCRIPTION",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "START DATE",
+              "displayName": "START DATE",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "END DATE",
+              "displayName": "END DATE",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        192,
+        -368
+      ],
+      "id": "bf9ace9e-2fa2-4202-98cb-88d2e9013910",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "hYaKNd2xRTN6l0Il",
+          "name": "gstv group"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "23083af3-8abb-4653-80d1-1101d8b220b3",
+              "name": "FIRST NAME",
+              "value": "={{ $json.fields['FULL NAMES'].split(' ').first() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        368,
+        -368
+      ],
+      "id": "c888fea3-2516-49ce-ba72-b3ee1c9f5ecd",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        544,
+        -368
+      ],
+      "id": "6ac1ba6a-6c96-4f98-bfd1-183672fc3f5f",
+      "name": "Wait",
+      "webhookId": "980dfa40-2ee5-4bf1-99a5-aad01ddb1ca0"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Create a record').item.json.fields['EMAIL ADDRESS'] }}",
+        "subject": "Welcome to GSTV GROUP",
+        "message": "<!DOCTYPE html> <html> <head>     <meta charset=\"UTF-8\">     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">     <title>Welcome to GSTV Group</title> </head> <body style=\"margin: 0; padding: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f4f4; color: #333333;\">      <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border-collapse: collapse; background-color: #ffffff; margin-top: 20px; margin-bottom: 20px; border-radius: 8px; overflow: hidden; box-shadow: 0px 4px 10px rgba(0,0,0,0.1);\">                  <tr>             <td align=\"center\" style=\"padding: 40px 0 30px 0; background-color: #1a1a1a;\">                 <h1 style=\"margin: 0; color: #ffffff; font-size: 28px; letter-spacing: 2px; text-transform: uppercase;\">                     GSTV <span style=\"color: #e63946;\">Group</span>                 </h1>             </td>         </tr>          <tr>             <td style=\"padding: 40px 30px 20px 30px;\">                 <h2 style=\"margin: 0; color: #1a1a1a; font-size: 24px; font-weight: bold;\">                     Welcome to the Inner Circle!                 </h2>                 <p style=\"font-size: 16px; line-height: 1.6; color: #555555; margin-top: 15px;\">                     Hello there, <br><br>                     Thank you for joining <strong>GSTV Group</strong>. We are thrilled to have you with us! You’ve officially taken the first step toward exclusive content, real-time updates, and a community that values quality media.                 </p>             </td>         </tr>          <tr>             <td style=\"padding: 0 30px 20px 30px;\">                 <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"background-color: #f9f9f9; border-radius: 6px; padding: 20px;\">                     <tr>                         <td>                             <h3 style=\"margin: 0 0 10px 0; color: #e63946; font-size: 18px;\">What’s next for you?</h3>                             <ul style=\"margin: 0; padding: 0 0 0 20px; color: #555555; font-size: 15px; line-height: 2;\">                                 <li>Early access to premium broadcasts.</li>                                 <li>Member-only newsletters and insights.</li>                                 <li>Priority support from our dedicated team.</li>                             </ul>                         </td>                     </tr>                 </table>             </td>         </tr>          <tr>             <td align=\"center\" style=\"padding: 20px 30px 40px 30px;\">                 <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">                     <tr>                         <td align=\"center\" style=\"border-radius: 5px; background-color: #e63946;\">                             <a href=\"https://gstvgroup.com/dashboard\" target=\"_blank\" style=\"padding: 15px 25px; border: 1px solid #e63946; border-radius: 5px; font-family: Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; font-weight: bold; display: inline-block;\">                                 Access Your Dashboard                             </a>                         </td>                     </tr>                 </table>             </td>         </tr>          <tr>             <td style=\"padding: 30px; background-color: #f4f4f4; text-align: center;\">                 <p style=\"margin: 0; font-size: 12px; color: #999999; line-height: 1.5;\">                     &copy; 2026 GSTV Group. All rights reserved.<br>                     You are receiving this email because you signed up on our website.                 </p>                 <p style=\"margin: 10px 0 0 0; font-size: 12px; color: #e63946;\">                     <a href=\"#\" style=\"color: #e63946; text-decoration: underline;\">Unsubscribe</a> | <a href=\"#\" style=\"color: #e63946; text-decoration: underline;\">Privacy Policy</a>                 </p>             </td>         </tr>      </table>  </body> </html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        704,
+        -368
+      ],
+      "id": "60245458-53c2-4605-b703-e14ea6115d44",
+      "name": "Send a message",
+      "webhookId": "956f9b08-58bf-4c59-bb31-56fc0d9b29a2",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8gFzvvavwYxAHomr",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 6
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -384,
+        -144
+      ],
+      "id": "fc2e16a1-1b07-4dfd-9159-b9915889835e",
+      "name": "Schedule Trigger",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.imgbb.com/1/upload",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "0f5aed42f6485c3ccce70a67f6fb14e0"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "image",
+              "inputDataFieldName": "PROFILE_PICTURE"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9639e6f1-bc2a-4b3c-84f5-15853154a7dd",
+      "name": "Upload to ImgBB1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        0,
+        -368
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "1d3504a3-a634-4a52-8bc9-f5719aedd403",
+              "leftValue": "={{ $json.fields['END DATE'] }}",
+              "rightValue": "={{ $now.plus(3,'days').format('yyyy-MM-dd') }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        32,
+        -144
+      ],
+      "id": "f9a816d7-9f20-4066-bee9-d43d4d1a9bb1",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "64c762a8-93ae-45c8-a921-c021b3874fc5",
+              "name": "FULL NAMES",
+              "value": "={{ $json.fields['FULL NAMES'].split(' ').first(0) }}",
+              "type": "string"
+            },
+            {
+              "id": "5754183c-dab1-41ef-b94d-989a5c5fd86f",
+              "name": "EMAIL",
+              "value": "={{ $json.fields['EMAIL ADDRESS'] }}",
+              "type": "string"
+            },
+            {
+              "id": "453b8c13-4b56-42a3-8d6f-505de010594a",
+              "name": "SUBSCRIPTION",
+              "value": "={{ $json.fields.SUBSCRIPTION }}",
+              "type": "string"
+            },
+            {
+              "id": "465d42e5-2ede-4021-bcd7-5ae9a737094f",
+              "name": "PHONE NUMBER",
+              "value": "={{ $('Search records').item.json.fields['PHONE NUMBER'] }}",
+              "type": "string"
+            },
+            {
+              "id": "add70ad3-e066-4075-8984-7d5f5de45f37",
+              "name": "PROFILE PICTURE",
+              "value": "={{ $json.fields['PROFILE PICTURE'][0] }}",
+              "type": "object"
+            },
+            {
+              "id": "2e99dc44-e2ff-40ac-bfd1-4e02a9f0b30b",
+              "name": "START DATE",
+              "value": "={{ $('Search records').item.json.fields['START DATE'] }}",
+              "type": "string"
+            },
+            {
+              "id": "389e534f-792f-4dbf-a0bf-d8d51ef16baa",
+              "name": "END DATE",
+              "value": "={{ $json.fields['END DATE'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        256,
+        -160
+      ],
+      "id": "336c560b-b3b4-49a3-857e-ae43804c8942",
+      "name": "Edit Fields1",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appc7YLW56BtT1naL",
+          "mode": "list",
+          "cachedResultName": "GSTV GROUP",
+          "cachedResultUrl": "https://airtable.com/appc7YLW56BtT1naL"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblLaD1iGtSc1KvAS",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appc7YLW56BtT1naL/tblLaD1iGtSc1KvAS"
+        },
+        "options": {},
+        "sort": {
+          "property": []
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -176,
+        -144
+      ],
+      "id": "a9650d20-6462-4277-b276-9a190a23e87d",
+      "name": "Search records",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "hYaKNd2xRTN6l0Il",
+          "name": "gstv group"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('If').item.json.fields['EMAIL ADDRESS'] }}",
+        "subject": "SUBSCRIPTION EXPIRATION NOTICE",
+        "message": "=<!DOCTYPE html> \n<html>\n <head>     \n<meta charset=\"UTF-8\">     \n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">     \n<title>Your GSTV Subscription EXPIRATIONOTICE  - GSTV Group</title> \n</head> \n<body style=\"margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; color: #333333;\">      \n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border-collapse: collapse; background-color: #ffffff; margin-top: 30px; margin-bottom: 30px; border: 1px solid #eeeeee; border-radius: 8px; overflow: hidden;\">                  \n<tr>             \n<td style=\"background-color: #e63946; height: 6px;\"></td>         \n</tr>         \n <tr>            \n <td align=\"center\" style=\"padding: 30px 0 20px 0;\">                 \n<h1 style=\"margin: 0; color: #1a1a1a; font-size: 26px; letter-spacing: 1px; text-transform: uppercase;\">                     GSTV <span style=\"color: #e63946;\">Group</span>                \n </h1>             \n</td>         \n</tr>          \n<tr>             <td style=\"padding: 20px 40px 40px 40px;\">                 <h2 style=\"color: #1a1a1a; font-size: 22px; text-align: center; margin-bottom: 20px;\">Your subscription has expires on {{ $('If').item.json.fields['END DATE'] }}</h2>                                  <p style=\"font-size: 16px; line-height: 1.6; color: #555555;\">                     Hello,   {{ $('If').item.json.fields['FULL NAMES'] }},             </p>                 <p style=\"font-size: 16px; line-height: 1.6; color: #555555;\">                     We are reaching out to let you know that your <strong>GSTV Group</strong> subscription will officially end on {{ $json['END DATE'] }}. As a result, you no longer have access to our premium broadcasts, member-only insights, and priority community features.                 </p>                  <table width=\"100%\" cellpadding=\"15\" cellspacing=\"0\" style=\"background-color: #fff5f5; border: 1px dashed #e63946; border-radius: 6px; margin: 25px 0;\">                     <tr>                         <td align=\"center\">                             <span style=\"color: #e63946; font-weight: bold; font-size: 14px; text-transform: uppercase;\">Account Status:</span>                             <span style=\"color: #333333; font-size: 16px; display: block; margin-top: 5px;\"> Low / Expired</span>                         </td>                     </tr>                 </table>                  <p style=\"font-size: 16px; line-height: 1.6; color: #555555;\">                     We’d love to have you back! Renewing your plan takes less than a minute and ensures you don't miss out on upcoming exclusive content.                 </p>             </td>         </tr>          <tr>             <td align=\"center\" style=\"padding: 0 40px 40px 40px;\">                 <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">                     <tr>                         <td align=\"center\" style=\"border-radius: 4px; background-color: #1a1a1a;\">                             <a href=\"https://gstvgroup.com/renew\" target=\"_blank\" style=\"padding: 18px 30px; border-radius: 4px; font-family: Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; font-weight: bold; display: inline-block;\">                                 RENEW SUBSCRIPTION NOW                             </a>                         </td>                     </tr>                 </table>             </td>         </tr>          <tr>             <td align=\"center\" style=\"padding: 20px 40px; border-top: 1px solid #eeeeee;\">                 <p style=\"font-size: 14px; color: #777777; margin: 0;\">                     Need help with your account? <a href=\"mailto:support@gstvgroup.com\" style=\"color: #e63946; text-decoration: none;\">Contact our support team</a>.                 </p>             </td>         </tr>          <tr>             <td style=\"padding: 30px; background-color: #f4f4f4; text-align: center;\">                 <p style=\"margin: 0; font-size: 12px; color: #999999;\">                     &copy; 2026 GSTV Group. All rights reserved.<br>                     GSTV Tower, Media District, Lagos, Nigeria.                 </p>                 <div style=\"margin-top: 15px;\">                     <a href=\"#\" style=\"font-size: 12px; color: #999999; text-decoration: underline;\">Privacy Policy</a> |                      <a href=\"#\" style=\"font-size: 12px; color: #999999; text-decoration: underline;\">Terms of Service</a>                 </div>             </td>         </tr>      </table>  </body> </html> {{ $('If').item.json.fields['END DATE'] }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        464,
+        -160
+      ],
+      "id": "75756c17-22e4-4e43-85e0-c3802544f601",
+      "name": "Send a message1",
+      "webhookId": "23747099-1d0e-4eca-a80c-319da34f5182",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8gFzvvavwYxAHomr",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "887350819",
+        "text": "=HELLO SIR, THIS IS TO NOTIFY YOU THAT THIS SUBSCRIBERS SUBSCRIPTION IS ABOUT TO EXPIRE.\nNAME: {{ $('If').item.json.fields['FULL NAMES'] }}\nPHONE NUMBER: {{ $('If').item.json.fields['PHONE NUMBER'] }}\nSTART DATE: {{ $('If').item.json.fields['START DATE'] }}\nEND DATE:{{ $('If').item.json.fields['END DATE'] }}\nSUBSCRIPTION TYPE: {{ $('If').item.json.fields.SUBSCRIPTION }}\nPLEASE CONTACT THEM FOR RENEWAL.\nTHANKS",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        672,
+        -160
+      ],
+      "id": "769b15ff-5878-4f3a-ba78-f02cdb421ef4",
+      "name": "Send a text message",
+      "webhookId": "add89e26-a9ec-4049-b510-d477cd5d635c",
+      "credentials": {
+        "telegramApi": {
+          "id": "cQivR8dGdUK4NevV",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json['PROFILE PICTURE'] }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "empty",
+                      "singleValue": true
+                    },
+                    "id": "5593660a-78a0-4881-b406-2f949769e7ba"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "NO PROFILE PICTURE"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "2e25b64d-92e2-4c18-b3f8-9aeeb7d83f25",
+                    "leftValue": "={{ $json['PROFILE PICTURE'] }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PROFILE PICTURE EXISTS"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -192,
+        -384
+      ],
+      "id": "c791d6e5-6610-4e6e-b7cd-09e5a6fd7eae",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appc7YLW56BtT1naL",
+          "mode": "list",
+          "cachedResultName": "Untitled Base",
+          "cachedResultUrl": "https://airtable.com/appc7YLW56BtT1naL"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblLaD1iGtSc1KvAS",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appc7YLW56BtT1naL/tblLaD1iGtSc1KvAS"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "FULL NAMES": "={{ $('On form submission').item.json['FULL NAME'] }}",
+            "PROFILE PICTURE": "=[\n  {\n    \"url\": \"{{ $json.data.url }}\"\n}\n]",
+            "EMAIL ADDRESS": "={{ $('On form submission').item.json['EMAIL ADDRESS'] }}",
+            "PHONE NUMBER": "=+{{ $('On form submission').item.json['PHONE NUMBER'] }}",
+            "SUBSCRIPTION": "={{ $('On form submission').item.json.SUBSCRIPTION }}",
+            "START DATE": "={{ $now.format('dd-MMM-yyyy') }}",
+            "END DATE": "={{ \n  {\n    'yearly': $now.plus({ years: 1 }),\n    'monthly': $now.plus({ months: 1 }),\n    'weekly': $now.plus({ weeks: 1 }),\n    'daily': $now.plus({ days: 1 })\n  }[$('On form submission').item.json.SUBSCRIPTION.toLowerCase().trim]?.toFormat('MM-dd-yyyy') \n  || $now.plus({ months: 1 }).toFormat('MM-dd-yyyy')\n}}\n"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "FULL NAMES",
+              "displayName": "FULL NAMES",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "PROFILE PICTURE",
+              "displayName": "PROFILE PICTURE",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "EMAIL ADDRESS",
+              "displayName": "EMAIL ADDRESS",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "PHONE NUMBER",
+              "displayName": "PHONE NUMBER",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "SUBSCRIPTION",
+              "displayName": "SUBSCRIPTION",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "START DATE",
+              "displayName": "START DATE",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "END DATE",
+              "displayName": "END DATE",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        192,
+        -528
+      ],
+      "id": "e2dcebfa-69f7-42fd-9b1d-a60f790ce344",
+      "name": "Create a record1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "hYaKNd2xRTN6l0Il",
+          "name": "gstv group"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "23083af3-8abb-4653-80d1-1101d8b220b3",
+              "name": "FIRST NAME",
+              "value": "={{ $json.fields['FULL NAMES'].split(' ').first() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        368,
+        -528
+      ],
+      "id": "9469f304-26a7-4218-9880-8794c7b40178",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        544,
+        -528
+      ],
+      "id": "4b0bcf7e-d174-48d6-8b2e-03fbd28d84a0",
+      "name": "Wait1",
+      "webhookId": "980dfa40-2ee5-4bf1-99a5-aad01ddb1ca0"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Create a record1').item.json.fields['EMAIL ADDRESS'] }}",
+        "subject": "Welcome to GSTV GROUP",
+        "message": "<!DOCTYPE html> <html> <head>     <meta charset=\"UTF-8\">     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">     <title>Welcome to GSTV Group</title> </head> <body style=\"margin: 0; padding: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f4f4; color: #333333;\">      <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"border-collapse: collapse; background-color: #ffffff; margin-top: 20px; margin-bottom: 20px; border-radius: 8px; overflow: hidden; box-shadow: 0px 4px 10px rgba(0,0,0,0.1);\">                  <tr>             <td align=\"center\" style=\"padding: 40px 0 30px 0; background-color: #1a1a1a;\">                 <h1 style=\"margin: 0; color: #ffffff; font-size: 28px; letter-spacing: 2px; text-transform: uppercase;\">                     GSTV <span style=\"color: #e63946;\">Group</span>                 </h1>             </td>         </tr>          <tr>             <td style=\"padding: 40px 30px 20px 30px;\">                 <h2 style=\"margin: 0; color: #1a1a1a; font-size: 24px; font-weight: bold;\">                     Welcome to the Inner Circle!                 </h2>                 <p style=\"font-size: 16px; line-height: 1.6; color: #555555; margin-top: 15px;\">                     Hello there, <br><br>                     Thank you for joining <strong>GSTV Group</strong>. We are thrilled to have you with us! You’ve officially taken the first step toward exclusive content, real-time updates, and a community that values quality media.                 </p>             </td>         </tr>          <tr>             <td style=\"padding: 0 30px 20px 30px;\">                 <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"background-color: #f9f9f9; border-radius: 6px; padding: 20px;\">                     <tr>                         <td>                             <h3 style=\"margin: 0 0 10px 0; color: #e63946; font-size: 18px;\">What’s next for you?</h3>                             <ul style=\"margin: 0; padding: 0 0 0 20px; color: #555555; font-size: 15px; line-height: 2;\">                                 <li>Early access to premium broadcasts.</li>                                 <li>Member-only newsletters and insights.</li>                                 <li>Priority support from our dedicated team.</li>                             </ul>                         </td>                     </tr>                 </table>             </td>         </tr>          <tr>             <td align=\"center\" style=\"padding: 20px 30px 40px 30px;\">                 <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">                     <tr>                         <td align=\"center\" style=\"border-radius: 5px; background-color: #e63946;\">                             <a href=\"https://gstvgroup.com/dashboard\" target=\"_blank\" style=\"padding: 15px 25px; border: 1px solid #e63946; border-radius: 5px; font-family: Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; font-weight: bold; display: inline-block;\">                                 Access Your Dashboard                             </a>                         </td>                     </tr>                 </table>             </td>         </tr>          <tr>             <td style=\"padding: 30px; background-color: #f4f4f4; text-align: center;\">                 <p style=\"margin: 0; font-size: 12px; color: #999999; line-height: 1.5;\">                     &copy; 2026 GSTV Group. All rights reserved.<br>                     You are receiving this email because you signed up on our website.                 </p>                 <p style=\"margin: 10px 0 0 0; font-size: 12px; color: #e63946;\">                     <a href=\"#\" style=\"color: #e63946; text-decoration: underline;\">Unsubscribe</a> | <a href=\"#\" style=\"color: #e63946; text-decoration: underline;\">Privacy Policy</a>                 </p>             </td>         </tr>      </table>  </body> </html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        704,
+        -528
+      ],
+      "id": "7f4e1420-9a9f-48bb-b529-971dfc013a51",
+      "name": "Send a message2",
+      "webhookId": "956f9b08-58bf-4c59-bb31-56fc0d9b29a2",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8gFzvvavwYxAHomr",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "SUSCRIPTION RENEWAL FORM",
+        "formDescription": "PLEASE KINDLY RENEW",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "NAME",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "EMAIL ADDRESS",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "PHONE NUMBER",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "SUBSCRIPTION PACKAGE TO RENEW",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "DAILY"
+                  },
+                  {
+                    "option": "WEEKLY"
+                  },
+                  {
+                    "option": "MONTHY"
+                  },
+                  {
+                    "option": "YEARLY"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "FILE ATTACHMENT",
+              "fieldType": "file",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -2624,
+        -64
+      ],
+      "id": "45df8574-9bb2-4cf4-9342-77e16d13e0a3",
+      "name": "On form submission1",
+      "webhookId": "3466379c-1a2c-43bd-acf7-9f2cb1cccdc3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "69350fe1-f52e-483f-826c-e9e5f8793d3c",
+              "name": "NAME",
+              "value": "={{ $('On form submission1').item.json.NAME }}",
+              "type": "string"
+            },
+            {
+              "id": "000d618d-4d0f-4d29-b40c-fa767a43d356",
+              "name": "=EMAIL ADDRESS",
+              "value": "={{ $('On form submission1').item.json['EMAIL ADDRESS'] }}",
+              "type": "string"
+            },
+            {
+              "id": "053f3bdb-66bb-43c6-8f76-29b99f164fb0",
+              "name": "PHONE NUMBER",
+              "value": "={{ $('On form submission1').item.json['PHONE NUMBER'] }}",
+              "type": "string"
+            },
+            {
+              "id": "a86c4cea-cd86-4546-8e85-f11c60bf0e5d",
+              "name": "SUBSCRIPTION PACKAGE TO RENEW",
+              "value": "={{ $('On form submission1').item.json['SUBSCRIPTION PACKAGE TO RENEW'] }}",
+              "type": "string"
+            },
+            {
+              "id": "52612ef1-1477-49c0-9479-f52f78eef131",
+              "name": "FILE ATTACHMENT",
+              "value": "={{ $('On form submission1').item.json['FILE ATTACHMENT'] }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2224,
+        -64
+      ],
+      "id": "46546df0-f152-414a-ada1-4d33495f27ad",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appc7YLW56BtT1naL",
+          "mode": "list",
+          "cachedResultName": "Untitled Base",
+          "cachedResultUrl": "https://airtable.com/appc7YLW56BtT1naL"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblLaD1iGtSc1KvAS",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appc7YLW56BtT1naL/tblLaD1iGtSc1KvAS"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "EMAIL ADDRESS": "={{ $json['EMAIL ADDRESS'] }}",
+            "SUBSCRIPTION": "={{ $json['SUBSCRIPTION PACKAGE TO RENEW'] }}",
+            "PHONE NUMBER": "={{ $json['PHONE NUMBER'] }}",
+            "FULL NAMES": "={{ $json.NAME }}",
+            "START DATE": "={{ $json.DATE }}",
+            "END DATE": "={{ \n  {\n    'yearly': $now.plus({ years: 1 }),\n    'monthly': $now.plus({ months: 1 }),\n    'weekly': $now.plus({ weeks: 1 }),\n    'daily': $now.plus({ days: 1 })\n  }[$('On form submission').item.json.SUBSCRIPTION PACKAGE]?.toFormat('dd-mm-yyyy') \n  || $now.plus({ months: 1 }).toFormat('MM-dd-yyyy')\n}}\n",
+            "STATUS": "=ACTIVE"
+          },
+          "matchingColumns": [
+            "EMAIL ADDRESS"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "FULL NAMES",
+              "displayName": "FULL NAMES",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "PROFILE PICTURE",
+              "displayName": "PROFILE PICTURE",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "EMAIL ADDRESS",
+              "displayName": "EMAIL ADDRESS",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "PHONE NUMBER",
+              "displayName": "PHONE NUMBER",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "SUBSCRIPTION",
+              "displayName": "SUBSCRIPTION",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "START DATE",
+              "displayName": "START DATE",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "END DATE",
+              "displayName": "END DATE",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "STATUS",
+              "displayName": "STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -1072,
+        -272
+      ],
+      "id": "c1e09773-59e4-4bcb-b3ac-056a462f496d",
+      "name": "Update record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "hYaKNd2xRTN6l0Il",
+          "name": "gstv group"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "32b7969a-4b1c-4082-9d3d-f72da699f06d",
+              "leftValue": "={{ $json.ORDER }}",
+              "rightValue": "RENEW",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1008,
+        -64
+      ],
+      "id": "e1eb62c2-4e60-486f-88aa-5a082010e0de",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1856,
+        80
+      ],
+      "id": "2e71a0f4-5280-47bc-8c19-04c7174338a3",
+      "name": "Wait2",
+      "webhookId": "19ead375-e2d5-41d6-b548-1832dcdb8f91"
+    },
+    {
+      "parameters": {
+        "sendTo": "goodlifenwaozuzu@gmail.com",
+        "subject": "APPROVAL REQUEST",
+        "message": "=<!DOCTYPE html>\n\n<html>\n\n<head>\n\n    <style>\n\n        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f9f9f9; padding: 20px; }\n\n        .container { max-width: 600px; margin: auto; background: #ffffff; padding: 30px; border-radius: 8px; border: 1px solid #e0e0e0; }\n\n        .header { border-bottom: 2px solid #004a99; padding-bottom: 10px; margin-bottom: 20px; }\n\n        .details { background: #f4f4f4; padding: 15px; border-radius: 5px; margin-bottom: 20px; }\n\n        .button-container { text-align: center; margin-top: 30px; }\n\n        .btn { padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; color: white !important; margin: 0 10px; display: inline-block; }\n\n        .btn-confirm { background-color: #28a745; }\n\n        .btn-reject { background-color: #dc3545; }\n\n        .footer { font-size: 12px; color: #777; margin-top: 30px; border-top: 1px solid #eee; padding-top: 10px; }\n\n    </style>\n\n</head>\n\n<body>\n\n    <div class=\"container\">\n\n        <div class=\"header\">\n\n            <h2 style=\"color: #004a99; margin: 0;\">Transaction Confirmation Request</h2>\n\n        </div>\n\n        \n\n        <p>Hello Team Lead,</p>\n\n        <p>A new transaction requires your immediate review and confirmation. Please find the transaction details below and the <strong>attached receipt</strong> for your verification.</p>\n\n        \n\n        \n\n            <strong>SUBSCRIPTION PACKAGE:</strong> {{ $json['SUBSCRIPTION PACKAGE TO RENEW'] }} <br>\n\n            <strong>FULL NAME:</strong> {{ $json.NAME }} <br>\n\n            <strong>EMAIL:</strong> {{ $json['EMAIL ADDRESS'] }} <br>\n\n            <strong>Date:</strong> {{$now}}\n\n       \n\n\n\n        <p>Please review the attachment and select an action below to update the system:</p>\n\n\n\n        \n\n            <a href=https://goodlifetony2.app.n8n.cloud/webhook-test/3e644da7-9976-4015-97c5-cb081c1402a5?status=confirmed&id={{$json.transaction_id}}\" class=\"btn btn-confirm\">CONFIRMED</a>\n\n            <a href=https://goodlifetony2.app.n8n.cloud/webhook-test/3e644da7-9976-4015-97c5-cb081c1402a5?status=unapproved&id={{$json.transaction_id}}\" class=\"btn btn-reject\">UNAPPROVED</a>\n\n        \n\n\n\n        <div class=\"footer\">\n\n            This is an automated request. If the attachment is missing or unreadable, please contact the finance department.\n\n        </div>\n\n    </div>\n\n</body>\n\n</html>",
+        "options": {
+          "appendAttribution": false,
+          "replyTo": "={{ $json['EMAIL ADDRESS'] }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -336,
+        384
+      ],
+      "id": "77406810-4f8e-4006-89b9-dffe05e1f811",
+      "name": "Send a message3",
+      "webhookId": "803833b2-7a28-4972-aa3d-052eb545e624",
+      "alwaysOutputData": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8gFzvvavwYxAHomr",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "base",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -2416,
+        -64
+      ],
+      "id": "cd86c8ec-23ce-45a1-adde-3aa914dad029",
+      "name": "Get many bases",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "hYaKNd2xRTN6l0Il",
+          "name": "gstv group"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "3e644da7-9976-4015-97c5-cb081c1402a5",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        288,
+        592
+      ],
+      "id": "611d743a-5ca0-42e6-8c07-122122ac197a",
+      "name": "Webhook",
+      "webhookId": "3e644da7-9976-4015-97c5-cb081c1402a5"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.query.status }}",
+                    "rightValue": "confirmed",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "24c62f71-42ab-43a8-babd-58e3a9a8fa5a"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "0041313b-9c4a-4f0e-9f94-e952d7e37272",
+                    "leftValue": "={{ $json.query.status }}",
+                    "rightValue": "unapproved",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        320
+      ],
+      "id": "a53c4d86-940c-4f79-b041-45127e42a01c",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1008,
+        144
+      ],
+      "id": "2cf2345c-f875-4135-85c2-b6ef00457515",
+      "name": "Send a message4",
+      "webhookId": "927c2e61-20c9-4d4c-9e0a-728e30d0c478",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8gFzvvavwYxAHomr",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appc7YLW56BtT1naL",
+          "mode": "list",
+          "cachedResultName": "GSTV GROUP",
+          "cachedResultUrl": "https://airtable.com/appc7YLW56BtT1naL"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblLaD1iGtSc1KvAS",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appc7YLW56BtT1naL/tblLaD1iGtSc1KvAS"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "FULL NAMES",
+              "displayName": "FULL NAMES",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "PROFILE PICTURE",
+              "displayName": "PROFILE PICTURE",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "EMAIL ADDRESS",
+              "displayName": "EMAIL ADDRESS",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "PHONE NUMBER",
+              "displayName": "PHONE NUMBER",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "SUBSCRIPTION",
+              "displayName": "SUBSCRIPTION",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "START DATE",
+              "displayName": "START DATE",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "END DATE",
+              "displayName": "END DATE",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "STATUS",
+              "displayName": "STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        912,
+        144
+      ],
+      "id": "90b7d042-76d5-4a79-a2c0-98c737d81d73",
+      "name": "Update record1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "hYaKNd2xRTN6l0Il",
+          "name": "gstv group"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        304
+      ],
+      "id": "b0dead1a-7bc3-4dde-b138-f48758847340",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "operation": "get"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -224,
+        496
+      ],
+      "id": "e53a9609-0882-4c4e-a5ab-a69e2c53358d",
+      "name": "Get a message",
+      "webhookId": "a5292466-60ed-454d-ba1f-93d28cb6a99e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8gFzvvavwYxAHomr",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "goodlifenwaozuzu@gmail.com",
+        "subject": "Approval Request",
+        "message": "=<!DOCTYPE html>\n\n<html>\n\n<head>\n\n    <style>\n\n        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f9f9f9; padding: 20px; }\n\n        .container { max-width: 600px; margin: auto; background: #ffffff; padding: 30px; border-radius: 8px; border: 1px solid #e0e0e0; }\n\n        .header { border-bottom: 2px solid #004a99; padding-bottom: 10px; margin-bottom: 20px; }\n\n        .details { background: #f4f4f4; padding: 15px; border-radius: 5px; margin-bottom: 20px; }\n\n        .button-container { text-align: center; margin-top: 30px; }\n\n        .btn { padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; color: white !important; margin: 0 10px; display: inline-block; }\n\n        .btn-confirm { background-color: #28a745; }\n\n        .btn-reject { background-color: #dc3545; }\n\n        .footer { font-size: 12px; color: #777; margin-top: 30px; border-top: 1px solid #eee; padding-top: 10px; }\n\n    </style>\n\n</head>\n\n<body>\n\n    <div class=\"container\">\n\n        <div class=\"header\">\n\n            <h2 style=\"color: #004a99; margin: 0;\">Transaction Confirmation Request</h2>\n\n        </div>\n\n        \n\n        <p>Hello Team Lead,</p>\n\n        <p>A new transaction requires your immediate review and confirmation. Please find the transaction details below and the <strong>attached receipt</strong> for your verification.</p>\n\n        \n\n        \n\n            <strong>SUBSCRIPTION PACKAGE:</strong> {{ $json['SUBSCRIPTION PACKAGE TO RENEW'] }} <br>\n\n            <strong>FULL NAME:</strong> {{ $json.NAME }} <br>\n\n            <strong>EMAIL:</strong> {{ $json['EMAIL ADDRESS'] }} <br>\n\n            <strong>Date:</strong> {{$now}}\n\n       \n\n\n\n        <p>Please review the attachment and select an action below to update the system:</p>\n\n\n\n        \n\n            <a href=https://goodlifetony2.app.n8n.cloud/webhook-test/3e644da7-9976-4015-97c5-cb081c1402a5?status=confirmed&id={{$json.transaction_id}}\" class=\"btn btn-confirm\">CONFIRMED</a>\n\n            <a href=https://goodlifetony2.app.n8n.cloud/webhook-test/3e644da7-9976-4015-97c5-cb081c1402a5?status=unapproved&id={{$json.transaction_id}}\" class=\"btn btn-reject\">UNAPPROVED</a>\n\n        \n\n\n\n        <div class=\"footer\">\n\n            This is an automated request. If the attachment is missing or unreadable, please contact the finance department.\n\n        </div>\n\n    </div>\n\n</body>\n\n</html>",
+        "approvalOptions": {
+          "values": {}
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -1936,
+        -112
+      ],
+      "id": "ba153706-fa6d-481b-b61b-95a203e79503",
+      "name": "Send message and wait for response",
+      "webhookId": "4c594277-1bb2-48ff-bfb3-d725fc432b67",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8gFzvvavwYxAHomr",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "240fbfbb-dbc1-42f0-8f57-76b753cce246",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1728,
+        -112
+      ],
+      "id": "b527e669-4fa4-4a8a-b16a-7953f6f75d72",
+      "name": "If2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1504,
+        16
+      ],
+      "id": "0138fe47-6168-45f3-97bb-b380d6e8ac2a",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appc7YLW56BtT1naL",
+          "mode": "list",
+          "cachedResultName": "GSTV GROUP",
+          "cachedResultUrl": "https://airtable.com/appc7YLW56BtT1naL"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblLaD1iGtSc1KvAS",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appc7YLW56BtT1naL/tblLaD1iGtSc1KvAS"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "EMAIL ADDRESS": "={{ $('Edit Fields3').item.json['EMAIL ADDRESS'] }}",
+            "PHONE NUMBER": "={{ $('Edit Fields3').item.json['PHONE NUMBER'] }}",
+            "SUBSCRIPTION": "={{ $('Edit Fields3').item.json['SUBSCRIPTION PACKAGE TO RENEW'] }}",
+            "PROFILE PICTURE": "={{ $('Edit Fields3').item.json['FILE ATTACHMENT'][0].filename }}",
+            "FULL NAMES": "={{ $('Edit Fields3').item.json.NAME }}",
+            "END DATE": "=\n {{ $now.plus({ days: 1 }).toFormat('MM-dd-yyyy') }}:{{ $now.plus({ week: 1 }).toFormat('MM-dd-yyyy') }}:{{ $now.plus({ months: 1 }).toFormat('MM-dd-yyyy') }}:{{ $now.plus({ years: 1 }).toFormat('MM-dd-yyyy') }}:\n\n\n\n{{\n  $json[\"SUBSCRIPTION PACKAGE TO RENEW\"] === \"daily\" \n    ? $now.plus({ days: $json[\"DURATION\"] }).toISODateString() \n    : $json[\"SUBSCRIPTION PACKAGE TO RENEW\"] === \"weekly\" \n      ? $now.plus({ days: 7,  $json[\"DURATION\"] }).toISODateString() \n      : $json[\"SUBSCRIPTION PACKAGE TO RENEW\"] === \"monthly\" \n        ? $now.plus({ months: 1, $json[\"DURATION\"] }).toISODateString() \n        : $json[\"SUBSCRIPTION PACKAGE TO RENEW\"] === \"yearly\" \n          ? $now.plus({ years: 1, $json[\"DURATION\"] }).toISODateString() \n          : $now.toISODateString()\n}}\n\n\n{{ \n  $json[\"SUBSCRIPTION PACKAGE TO RENEW\"] === \"daily\" \n    ? $now.plus({ days: 1 }) \n    : $json[\"SUBSCRIPTION PACKAGE TO RENEW\"] === \"weekly\" \n      ? $now.plus({ days: 7 })\n      : $json[\"SUBSCRIPTION PACKAGE TO RENEW\"] === \"monthly\" \n        ? $now.plus({ months: 1 }) \n        : $json[\"SUBSCRIPTION PACKAGE TO RENEW\"] === \"yearly\" \n          ? $now.plus({ years: 1 }): $now\n}}",
+            "START DATE": "={{ $now }}"
+          },
+          "matchingColumns": [
+            "EMAIL ADDRESS"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "FULL NAMES",
+              "displayName": "FULL NAMES",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "PROFILE PICTURE",
+              "displayName": "PROFILE PICTURE",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "EMAIL ADDRESS",
+              "displayName": "EMAIL ADDRESS",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "PHONE NUMBER",
+              "displayName": "PHONE NUMBER",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "SUBSCRIPTION",
+              "displayName": "SUBSCRIPTION",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "START DATE",
+              "displayName": "START DATE",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "END DATE",
+              "displayName": "END DATE",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "STATUS",
+              "displayName": "STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -1264,
+        16
+      ],
+      "id": "81a4d3a6-08d2-4dee-9112-f46e261b540e",
+      "name": "Update record2",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "hYaKNd2xRTN6l0Il",
+          "name": "gstv group"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "On form submission": [
+      {
+        "json": {
+          "FULL NAME": "Emeh Onyinyechi Jessy",
+          "EMAIL ADDRESS": "Emehonyinyechigoodlife@gmail.com",
+          "PHONE NUMBER": 2349062292871,
+          "SUBSCRIPTION": "Daily",
+          "PROFILE PICTURE": {
+            "filename": "IMG_20251105_165302_502.jpg",
+            "mimetype": "image/jpeg",
+            "size": 294815
+          },
+          "submittedAt": "2026-04-22T18:01:42.870+01:00",
+          "formMode": "test"
+        },
+        "binary": {
+          "PROFILE_PICTURE": {
+            "mimeType": "image/jpeg",
+            "fileType": "image",
+            "fileExtension": "jpg",
+            "data": "filesystem-v2",
+            "fileName": "IMG_20251105_165302_502.jpg",
+            "id": "filesystem-v2:workflows/UFpKbsQFvRRjaEnc/executions/temp/binary_data/b0b021f7-11f8-493a-8d28-2961a328180a",
+            "fileSize": "295 kB",
+            "bytes": 294815
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "On form submission1": [
+      {
+        "json": {
+          "NAME": "EMEH ONYINYECHI JESSY",
+          "EMAIL ADDRESS": "emehonyinyechigoodlife@gmail.com",
+          "PHONE NUMBER": 2349062292871,
+          "SUBSCRIPTION PACKAGE TO RENEW": "WEEKLY",
+          "FILE ATTACHMENT": [
+            {
+              "filename": "IMG_0148.JPG",
+              "mimetype": "image/jpeg",
+              "size": 103123
+            }
+          ],
+          "submittedAt": "2026-04-24T12:22:27.131+01:00",
+          "formMode": "test"
+        },
+        "binary": {
+          "FILE_ATTACHMENT": {
+            "mimeType": "image/jpeg",
+            "fileType": "image",
+            "fileExtension": "jpg",
+            "data": "filesystem-v2",
+            "fileName": "IMG_0148.JPG",
+            "id": "filesystem-v2:workflows/UFpKbsQFvRRjaEnc/executions/temp/binary_data/62b6b2fe-75fc-4f1e-af5b-cbf6d0b21ab9",
+            "fileSize": "103 kB",
+            "bytes": 103123
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "goodlifetony2.app.n8n.cloud",
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+            "accept-encoding": "gzip, br",
+            "accept-language": "en-US,en;q=0.9",
+            "cdn-loop": "cloudflare; loops=1; subreqs=1",
+            "cf-connecting-ip": "102.90.96.222",
+            "cf-ew-via": "15",
+            "cf-ipcountry": "NG",
+            "cf-ray": "9f16965c1eef6557-LHR",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "n8n.cloud",
+            "cookie": {
+              "__redacted": true,
+              "reason": "node_defined_field",
+              "canReveal": false
+            },
+            "priority": "u=0, i",
+            "save-data": "on",
+            "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Linux\"",
+            "sec-fetch-dest": "document",
+            "sec-fetch-mode": "navigate",
+            "sec-fetch-site": "cross-site",
+            "upgrade-insecure-requests": "1",
+            "x-forwarded-for": "102.90.96.222, 172.69.194.87",
+            "x-forwarded-host": "goodlifetony2.app.n8n.cloud",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik-prod-users-gwc-115-6876b7c466-v98c5",
+            "x-is-trusted": "yes",
+            "x-real-ip": "102.90.96.222"
+          },
+          "params": {},
+          "query": {
+            "status": "confirmed",
+            "id": "\""
+          },
+          "body": {},
+          "webhookUrl": "https://goodlifetony2.app.n8n.cloud/webhook-test/3e644da7-9976-4015-97c5-cb081c1402a5",
+          "executionMode": "test"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Search records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to ImgBB1": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search records": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Create a record1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upload to ImgBB1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission1": {
+      "main": [
+        [
+          {
+            "node": "Get many bases",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send message and wait for response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        []
+      ]
+    },
+    "Get many bases": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Update record1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update record1": {
+      "main": [
+        [
+          {
+            "node": "Send a message4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message3": {
+      "main": [
+        [
+          {
+            "node": "Get a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Update record2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "h8zY0yPBTodRSnNM",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "e632cd79-89f9-445a-a180-cef8bc115f2a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "507321e110d6c4cc6ec70c1f7651b89526d383bedcd57f5ccac5f445cc25c175"
+  },
+  "id": "UFpKbsQFvRRjaEnc",
+  "tags": []
+}
