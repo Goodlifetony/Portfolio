@@ -1,0 +1,1316 @@
+{
+  "name": "Rag Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1GnZeX766sIMp0h3X7Ei84pcLR8O8Lw6-",
+          "mode": "list",
+          "cachedResultName": "Watched folder",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1GnZeX766sIMp0h3X7Ei84pcLR8O8Lw6-"
+        },
+        "event": "={{ \"fileCreated\" }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        448,
+        32
+      ],
+      "id": "03ecf509-e58b-4a18-9c5d-a11fced087ac",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "zXvUG68b0Lu6OK7o",
+          "name": "Google Drive OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "nathanandetyhan1",
+          "mode": "list",
+          "cachedResultName": "nathanandetyhan1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        896,
+        32
+      ],
+      "id": "ad128d05-92ce-4922-bb3a-3a41872ea6b1",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "KNhMr5no7T3JS04Z",
+          "name": "Pinecone account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        1024,
+        272
+      ],
+      "id": "8dbd215b-9ef7-401f-a0f6-c9a95bc534f7",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        928,
+        496
+      ],
+      "id": "9af8c3ee-1f1e-4549-bebc-57b60900ced8",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1024,
+        720
+      ],
+      "id": "7d334307-d74c-4edb-ae8c-2d0b203b264f",
+      "name": "Simple Memory1"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "You are a professional AI customer support assistant for Goodlife Mobile Store.\nMANDATORY RULE: Before responding to ANY customer message, you MUST call the Pinecone Vector Store tool first. This is not optional. Search Pinecone using the customer's exact question as your query. Do not respond without searching first.\nAfter searching Pinecone, use the retrieved results to answer the customer.If the customer asks anything NOT related to the stores services, sales, phone models, prices, warranty, availibility, or return policy, respond with exactly this:\"I'm sorry, I don't have enough information to answer this right now. Would you like to speak with a human agent?\"\nNever provide contact details as an answer. Never make up information. Always be warm, professional and concise.",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "nathanandetyhan1",
+          "mode": "list",
+          "cachedResultName": "nathanandetyhan1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        1168,
+        720
+      ],
+      "id": "2fac8961-b588-40a4-b0b9-256e133e54ff",
+      "name": "Pinecone Vector Store2",
+      "credentials": {
+        "pineconeApi": {
+          "id": "KNhMr5no7T3JS04Z",
+          "name": "Pinecone account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1232,
+        928
+      ],
+      "id": "0a0eea70-b097-462c-be67-d63d38eecee7",
+      "name": "Embeddings Google Gemini2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "HTmbY6HeKGgprMjU",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        672,
+        32
+      ],
+      "id": "ffb1c7ef-52dc-47a3-a76f-0a7b04f31d86",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "zXvUG68b0Lu6OK7o",
+          "name": "Google Drive OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "f9057d11-ec1f-4c4b-8fbe-9a2899a97e1d",
+        "responseMode": "streaming",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        448,
+        496
+      ],
+      "id": "ac5bfd6e-dca7-4986-adf8-6cab67008cce",
+      "name": "Webhook",
+      "webhookId": "800fa495-78cf-4b24-b570-11ea601b6a0d"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "chatInput",
+              "value": "={{ $json.body.messageData.textMessageData.textMessage }}",
+              "type": "string"
+            },
+            {
+              "id": "a2",
+              "name": "sessionId",
+              "value": "={{ $json.body.instanceData.idInstance }}",
+              "type": "string"
+            },
+            {
+              "id": "a3",
+              "name": "senderPhone",
+              "value": "={{ $json.body.senderData.sender }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e9c811ad-36c4-439c-966f-0565512eafc9",
+      "name": "Extract Message Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        688,
+        496
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Webhook').item.json.body.senderData.chatId }}",
+        "quotedMessageId": "={{ $('Webhook').item.json.body.idMessage }}",
+        "message": "={{ $json.output }}"
+      },
+      "id": "a4049461-f738-4a2e-99b9-8484fbc72048",
+      "name": "Send WhatsApp Reply",
+      "type": "@green-api/n8n-nodes-whatsapp-greenapi.greenapi",
+      "typeVersion": 1,
+      "position": [
+        1296,
+        496
+      ],
+      "credentials": {
+        "greenApiAuthApi": {
+          "id": "oE61ie6VKZIvjbqc",
+          "name": "Green-API account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appWZeMT6g31BNtaq",
+          "mode": "list",
+          "cachedResultName": "RAG Agent",
+          "cachedResultUrl": "https://airtable.com/appWZeMT6g31BNtaq"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbloNXwXxl42rZOlW",
+          "mode": "list",
+          "cachedResultName": "Answered Conversation Table",
+          "cachedResultUrl": "https://airtable.com/appWZeMT6g31BNtaq/tbloNXwXxl42rZOlW"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "customer Name": "={{ $('Webhook').item.json.body.senderData.senderName }}",
+            "Phone NUmber": "={{ $('Extract Message Data').item.json.senderPhone }}",
+            "Answer Given by Bot": "={{ $('AI Agent').item.json.output }}",
+            "Question Asked": "={{ $('Extract Message Data').item.json.chatInput }}",
+            "Status": "Answered",
+            "Time Stamp": "2026-05-08T11:06:41"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "customer Name",
+              "displayName": "customer Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone NUmber",
+              "displayName": "Phone NUmber",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Question Asked",
+              "displayName": "Question Asked",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Answer Given by Bot",
+              "displayName": "Answer Given by Bot",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Time Stamp",
+              "displayName": "Time Stamp",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Answered",
+                  "value": "Answered"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "typecast": true
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        1488,
+        496
+      ],
+      "id": "5311de5f-f65a-4533-a41f-8864827e1a48",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "w0CQAbsNZrlRIH3I",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "504fc1c5-b48d-43f3-a9d0-f35581cacac7",
+              "leftValue": "={{ $json.fields['Answer Given by Bot'] ? ['transfer to human', 'handing over to human'].some(p => $json.fields['Answer Given by Bot'].toLowerCase().includes(p)) : false }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {
+          "ignoreCase": false
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1680,
+        496
+      ],
+      "id": "4d6a52ad-5f0e-41a2-bf30-b4dc00538e15",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appWZeMT6g31BNtaq",
+          "mode": "list",
+          "cachedResultName": "RAG Agent",
+          "cachedResultUrl": "https://airtable.com/appWZeMT6g31BNtaq"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblZAzlrm2ATUiV08",
+          "mode": "list",
+          "cachedResultName": "Escalated/Unanswered Questions Table",
+          "cachedResultUrl": "https://airtable.com/appWZeMT6g31BNtaq/tblZAzlrm2ATUiV08"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Customer Name": "={{ $('Create a record').item.json.fields['customer Name'] }}",
+            "Phone Number": "={{ $('Create a record').item.json.fields['Phone NUmber'] }}",
+            "Reason for Escalation": "bot couldnt find answer in document",
+            "Question Asked": "={{ $('Create a record').item.json.fields['Question Asked'] }}",
+            "Status": "Pending - Awaiting Agent"
+          },
+          "matchingColumns": [
+            "Phone Number"
+          ],
+          "schema": [
+            {
+              "id": "Customer Name",
+              "displayName": "Customer Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Question Asked",
+              "displayName": "Question Asked",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Reason for Escalation",
+              "displayName": "Reason for Escalation",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "TimeStamp",
+              "displayName": "TimeStamp",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        2224,
+        288
+      ],
+      "id": "f6666829-7b48-4300-a07d-f1cc708295a4",
+      "name": "Create a record1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "w0CQAbsNZrlRIH3I",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 3,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2240,
+        672
+      ],
+      "id": "536be826-2a35-457e-975d-49924d87314d",
+      "name": "Wait",
+      "webhookId": "68edcdff-6a2e-40b4-94ef-0004346b3af2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b58721b2-9b0c-49bc-9153-a01285b5e647",
+              "leftValue": "={{ $json.data.text }}",
+              "rightValue": "Claimed",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "e3910029-f9fd-40d6-93d3-f873688e75c2",
+              "leftValue": "={{ $json.data.text }}",
+              "rightValue": "Claimed",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2496,
+        464
+      ],
+      "id": "5656ca53-d8be-43ba-bf43-2242d20055c9",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "sendAndWait",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AJMRZ3DJA",
+          "mode": "list",
+          "cachedResultName": "all-phone-xperts"
+        },
+        "message": "=Hello Team,\nKindly find the customer details below and attend as our bot is unable to provide answers.\nCustomer Name:  {{ $('Create a record').item.json.fields['customer Name'] }}\nPhone Number: {{ $('Create a record').item.json.fields['Phone NUmber'] }}",
+        "responseType": "freeText",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        2224,
+        480
+      ],
+      "id": "55c3194e-601f-4785-9210-1b963ce2249f",
+      "name": "Send message and wait for response",
+      "webhookId": "d8a6bc03-43ff-451a-a141-fa12cff1186d",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "pOyIdVqCE5WCZOnW",
+          "name": "Slack OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.fields['Phone NUmber'] }}",
+        "message": "Please hold on, we're connecting you to our agents. This usually takes just a few "
+      },
+      "type": "@green-api/n8n-nodes-whatsapp-greenapi.greenapi",
+      "typeVersion": 1,
+      "position": [
+        1920,
+        480
+      ],
+      "id": "42639e07-83f5-44bb-a790-801a84c33597",
+      "name": "Send message1",
+      "credentials": {
+        "greenApiAuthApi": {
+          "id": "oE61ie6VKZIvjbqc",
+          "name": "Green-API account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appWZeMT6g31BNtaq",
+          "mode": "list",
+          "cachedResultName": "RAG Agent",
+          "cachedResultUrl": "https://airtable.com/appWZeMT6g31BNtaq"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblZAzlrm2ATUiV08",
+          "mode": "list",
+          "cachedResultName": "Escalated/Unanswered Questions Table",
+          "cachedResultUrl": "https://airtable.com/appWZeMT6g31BNtaq/tblZAzlrm2ATUiV08"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "Claimed",
+            "Phone Number": "={{ $('Create a record').item.json.fields['Phone NUmber'] }}",
+            "Customer Name": "={{ $('Create a record').item.json.fields['customer Name'] }}"
+          },
+          "matchingColumns": [
+            "Phone Number"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Customer Name",
+              "displayName": "Customer Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Question Asked",
+              "displayName": "Question Asked",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Reason for Escalation",
+              "displayName": "Reason for Escalation",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "TimeStamp",
+              "displayName": "TimeStamp",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        2720,
+        320
+      ],
+      "id": "b3c9efdf-ecc6-4384-9faa-a24ff8426674",
+      "name": "Update record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "w0CQAbsNZrlRIH3I",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appWZeMT6g31BNtaq",
+          "mode": "list",
+          "cachedResultName": "RAG Agent",
+          "cachedResultUrl": "https://airtable.com/appWZeMT6g31BNtaq"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblZAzlrm2ATUiV08",
+          "mode": "list",
+          "cachedResultName": "Escalated/Unanswered Questions Table",
+          "cachedResultUrl": "https://airtable.com/appWZeMT6g31BNtaq/tblZAzlrm2ATUiV08"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "Declined handoff -",
+            "Phone Number": "={{ $('Create a record').item.json.fields['Phone NUmber'] }}"
+          },
+          "matchingColumns": [
+            "Phone Number"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Customer Name",
+              "displayName": "Customer Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Question Asked",
+              "displayName": "Question Asked",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Reason for Escalation",
+              "displayName": "Reason for Escalation",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "TimeStamp",
+              "displayName": "TimeStamp",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        1920,
+        688
+      ],
+      "id": "95d34ad3-543a-4fd3-b09e-9ad79f76115f",
+      "name": "Update record1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "w0CQAbsNZrlRIH3I",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Create a record').item.json.fields['Phone NUmber'] }}",
+        "message": "We are sorry for the wait. All our agents are currently busy. please fill in this  short form and a team member will get back to you shorly. https://tally.so/r/gDYalJ"
+      },
+      "id": "54246974-da55-42c1-8337-5ed8b222b849",
+      "name": "Send Form Link",
+      "type": "@green-api/n8n-nodes-whatsapp-greenapi.greenapi",
+      "typeVersion": 1,
+      "position": [
+        2736,
+        640
+      ],
+      "executeOnce": true,
+      "credentials": {
+        "greenApiAuthApi": {
+          "id": "oE61ie6VKZIvjbqc",
+          "name": "Green-API account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        848,
+        240
+      ],
+      "id": "99439b41-6d92-4aca-aaa7-1acfa7c868da",
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "HTmbY6HeKGgprMjU",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.3-chat-latest",
+          "mode": "list",
+          "cachedResultName": "gpt-5.3-chat-latest"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        800,
+        736
+      ],
+      "id": "a1fe83e1-0e70-4fb0-a460-9897e786170c",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://tally.so/r/gDYalJ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2928,
+        640
+      ],
+      "id": "88dde781-555b-4932-afa4-f9c797f35e3e",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('If1').item.json.fields['Phone NUmber'] }}",
+        "message": "Thank You, Your request has been logged and a member of our team willbe in touch shortly, we appreciate your patience."
+      },
+      "type": "@green-api/n8n-nodes-whatsapp-greenapi.greenapi",
+      "typeVersion": 1,
+      "position": [
+        3104,
+        640
+      ],
+      "id": "f6061b60-c395-4860-a5a7-b58e07ce609e",
+      "name": "Send message",
+      "credentials": {
+        "greenApiAuthApi": {
+          "id": "oE61ie6VKZIvjbqc",
+          "name": "Green-API account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "goodlifetony3.app.n8n.cloud",
+            "user-agent": "GREEN-API",
+            "content-length": "493",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, br",
+            "cdn-loop": "cloudflare; loops=1; subreqs=1",
+            "cf-connecting-ip": "64.226.111.11",
+            "cf-ew-via": "15",
+            "cf-ipcountry": "DE",
+            "cf-ray": "9f9093519fe3f090-DFW",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "n8n.cloud",
+            "content-type": "application/json; charset=utf-8",
+            "x-forwarded-for": "64.226.111.11, 172.70.94.45",
+            "x-forwarded-host": "goodlifetony3.app.n8n.cloud",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik-prod-users-gwc-62-866898f99d-9fxc9",
+            "x-is-trusted": "yes",
+            "x-real-ip": "64.226.111.11"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "typeWebhook": "incomingMessageReceived",
+            "idMessage": "AC964C77738753431F6E21BB3E3D075C",
+            "instanceData": {
+              "idInstance": 7107610023,
+              "wid": "2347037299250@c.us",
+              "typeInstance": "whatsapp"
+            },
+            "timestamp": 1778328357,
+            "senderData": {
+              "chatId": "2347067829448@c.us",
+              "sender": "2347067829448@c.us",
+              "senderName": "My Forever 😘",
+              "senderContactName": "My Forever 😘",
+              "chatName": "My Forever 😘"
+            },
+            "messageData": {
+              "typeMessage": "textMessage",
+              "textMessageData": {
+                "textMessage": "I want to speak with a human agent"
+              }
+            }
+          },
+          "webhookUrl": "https://goodlifetony3.app.n8n.cloud/webhook/f9057d11-ec1f-4c4b-8fbe-9a2899a97e1d",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini2": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store2",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Extract Message Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send WhatsApp Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Message Data": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send WhatsApp Reply": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Send message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update record1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Update record",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Form Link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message1": {
+      "main": [
+        [
+          {
+            "node": "Create a record1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send message and wait for response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update record1": {
+      "main": [
+        []
+      ]
+    },
+    "Update record": {
+      "main": [
+        []
+      ]
+    },
+    "Send Form Link": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "93a0be07-5157-4162-81b0-d0e8cffcfd03",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2d38c0a0a43ef38eff340fa9e2c41ce4bf74f8cd7ee287a20c44001603d626ca"
+  },
+  "id": "S3Hka2ncBRTNpx6E",
+  "tags": []
+}
