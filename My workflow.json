@@ -1,0 +1,262 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "authentication": "airtableTokenApi",
+        "baseId": {
+          "__rl": true,
+          "value": "https://airtable.com/appRIv2bJ3bPzAJ7d/tbl49SpfA210Ic5G4/recBzcIvO7Kez4iv4",
+          "mode": "url"
+        },
+        "tableId": {
+          "__rl": true,
+          "value": "https://airtable.com/appRIv2bJ3bPzAJ7d/tblt2d4Gm8qzVYsYb/viwa7nFwHYbQQoCC5/recc0N3E0QcPZijLB?blocks=hide",
+          "mode": "url"
+        },
+        "triggerField": "EVENT NAME",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.airtableTrigger",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        112
+      ],
+      "id": "ada2be9f-f11c-4607-bbd1-32cba6626065",
+      "name": "Airtable Trigger",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "4S7YQYrWeCDkBevc",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "05de5998-a610-4b85-b5df-9d4f579e9ae2",
+              "name": "EVENT NAME",
+              "value": "={{ $json.fields['EVENT NAME'] }}",
+              "type": "string"
+            },
+            {
+              "id": "867c40d3-675c-4de0-a50d-aa309d2f66d4",
+              "name": "EVENT LOCATION",
+              "value": "={{ $json.fields['EVENT LOCATION'] }}",
+              "type": "string"
+            },
+            {
+              "id": "38c90eab-f1e7-49ad-a9c6-544400a796e1",
+              "name": "EVENT DATE",
+              "value": "={{ $json.fields.DATE }}",
+              "type": "string"
+            },
+            {
+              "id": "c0d2a495-5e55-450f-b260-819f9da106b1",
+              "name": "EMAIL",
+              "value": "={{ $json.fields.EMAIL[1] }}",
+              "type": "string"
+            },
+            {
+              "id": "99438421-7e18-40ad-a80e-42f912c2dbb3",
+              "name": "EMAIL 2",
+              "value": "={{ $json.fields.EMAIL[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "8856099d-6d3f-4f27-9866-bd37964e45f0",
+              "name": "EVENT STATUS",
+              "value": "={{ $json.fields.STATUS[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "d8fcffdb-4b1d-477e-88ba-83b39f7abfc6",
+              "name": "AVAILABLE SPOTS",
+              "value": "={{ $json.fields['AVAILABLE SPOTS'] }}",
+              "type": "number"
+            },
+            {
+              "id": "341076b2-eac9-4e4e-aadf-57470d69f755",
+              "name": "TOTAL ATTENDEES",
+              "value": "={{ $json.fields['TOTAL ATTENDEES'] }}",
+              "type": "number"
+            },
+            {
+              "id": "4d839edb-f8b3-4375-a8a3-f10b0cfae40c",
+              "name": "TOTAL CAPACITY",
+              "value": "={{ $json.fields['TOTAL CAPACITY'] }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        144,
+        112
+      ],
+      "id": "322ed283-0964-4880-9952-81d7b3a7a0a6",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['EMAIL 2'] }}\n",
+        "subject": "WELCOME",
+        "message": "= <!DOCTYPE html> <html> <head>   <meta charset=\"UTF-8\">   <title>Welcome to Event Hub</title> </head> <body style=\"margin:0; padding:0; background-color:#f4f4f4; font-family:Arial, sans-serif;\">    <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color:#f4f4f4; padding:30px 0;\">     <tr>       <td align=\"center\">          <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color:#ffffff; border-radius:8px; overflow:hidden;\">            <!-- Header -->           <tr>             <td align=\"center\" style=\"background-color:#111827; padding:30px;\">               <h1 style=\"color:#ffffff; margin:0; font-size:28px;\">                 Welcome to Event Hub               </h1>             </td>           </tr>            <!-- Body -->           <tr>             <td style=\"padding:40px 30px; color:#333333;\">                <h2 style=\"margin-top:0; color:#111827;\">                 Hi {{first_name}},               </h2>                <p style=\"font-size:16px; line-height:1.6;\">                 Thank you for registering for our event through <strong>Event Hub</strong>.               </p>                <p style=\"font-size:16px; line-height:1.6;\">                 We’re excited to have you join us. Your registration has been successfully confirmed, and we’ll be sharing more event details with you soon.               </p>                <!-- Event Details Box -->               <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color:#f9fafb; border:1px solid #e5e7eb; border-radius:6px; margin:25px 0;\">                 <tr>                   <td style=\"padding:20px;\">                      <p style=\"margin:0 0 10px 0; font-size:15px;\">                       <strong>Event:</strong>  {{ $json['EVENT NAME'] }}                    </p>                      <p style=\"margin:0 0 10px 0; font-size:15px;\">                       <strong>Date:</strong>  {{ $json['EVENT DATE'] }}                  </p>                      <p style=\"margin:0; font-size:15px;\">                       <strong>Location:</strong> {{ $json['EVENT LOCATION'] }}                     </p>                    </td>                 </tr>               </table>                <p style=\"font-size:16px; line-height:1.6;\">                 If you have any questions, feel free to reply to this email.               </p>                <p style=\"font-size:16px; line-height:1.6;\">                 We look forward to seeing you there!               </p>                <p style=\"margin-top:30px; font-size:16px;\">                 Best regards,<br>                 <strong>Event Hub Team</strong>               </p>              </td>           </tr>            <!-- Footer -->           <tr>             <td align=\"center\" style=\"background-color:#f9fafb; padding:20px; font-size:13px; color:#6b7280;\">               © 2026 Event Hub. All rights reserved.             </td>           </tr>          </table>        </td>     </tr>   </table>  </body> </html> ```",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        0
+      ],
+      "id": "18f01ebd-dc6c-4b56-a665-0509a359f2f3",
+      "name": "Send a message1",
+      "webhookId": "883309f5-d64b-4ec6-bac9-3936d9934c9f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "4xGbik9sOcObPfn6",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "EVENT REGISTRATION NOTIFICATION MESSAGE",
+        "height": 352,
+        "width": 1076
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -240,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "17009010-d9a1-4ba5-aaf3-652624e181c0",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ecb610e8-d71f-4a39-84b7-fdbcb0b05209",
+              "leftValue": "={{ $json['AVAILABLE SPOTS'] }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        352,
+        112
+      ],
+      "id": "e64ae30e-6867-4890-a420-809d15a9ed81",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Edit Fields').item.json.EMAIL }}",
+        "subject": "REGISTRATION INFO",
+        "message": "= <!DOCTYPE html> <html> <head>   <meta charset=\"UTF-8\">   <title>Welcome to Event Hub</title> </head> <body style=\"margin:0; padding:0; background-color:#f4f4f4; font-family:Arial, sans-serif;\">    <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color:#f4f4f4; padding:30px 0;\">     <tr>       <td align=\"center\">          <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color:#ffffff; border-radius:8px; overflow:hidden;\">            <!-- Header -->           <tr>             <td align=\"center\" style=\"background-color:#111827; padding:30px;\">               <h1 style=\"color:#ffffff; margin:0; font-size:28px;\">                 Welcome to Event Hub               </h1>             </td>           </tr>            <!-- Body -->           <tr>             <td style=\"padding:40px 30px; color:#333333;\">                <h2 style=\"margin-top:0; color:#111827;\">                 Hi {{first_name}},               </h2>                <p style=\"font-size:16px; line-height:1.6;\">                 Thank you for registering for our event through <strong>Event Hub</strong>.               </p>                <p style=\"font-size:16px; line-height:1.6;\">                 We’re excited to have you join us. Your registration was successfull, but WAITLISTED due to capacity limits, we’ll be sharing more event details with you soon.               </p>                <!-- Event Details Box -->               <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color:#f9fafb; border:1px solid #e5e7eb; border-radius:6px; margin:25px 0;\">                 <tr>                   <td style=\"padding:20px;\">                      <p style=\"margin:0 0 10px 0; font-size:15px;\">                       <strong>Event:</strong>   {{ $('Edit Fields').item.json['EVENT NAME'] }}                   </p>                      <p style=\"margin:0 0 10px 0; font-size:15px;\">                       <strong>Date:</strong>    {{ $('Edit Fields').item.json['EVENT DATE'] }}               </p>                      <p style=\"margin:0; font-size:15px;\">                       <strong>Location:</strong>   {{ $('Edit Fields').item.json['EVENT LOCATION'] }}                  </p>                    </td>                 </tr>               </table>                <p style=\"font-size:16px; line-height:1.6;\">                 If you have any questions, feel free to reply to this email.               </p>                <p style=\"font-size:16px; line-height:1.6;\">                 We look forward to seeing you there!               </p>                <p style=\"margin-top:30px; font-size:16px;\">                 Best regards,<br>                 <strong>Event Hub Team</strong>               </p>              </td>           </tr>            <!-- Footer -->           <tr>             <td align=\"center\" style=\"background-color:#f9fafb; padding:20px; font-size:13px; color:#6b7280;\">               © 2026 Event Hub. All rights reserved.             </td>           </tr>          </table>        </td>     </tr>   </table>  </body> </html> ```",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        208
+      ],
+      "id": "0321496e-923d-4f63-b3c2-3f4bb93dfdf1",
+      "name": "Send a message2",
+      "webhookId": "54741cef-2c4f-4c5a-9318-962519d1acff",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "4xGbik9sOcObPfn6",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Airtable Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "486ae18b-21dd-413e-8e17-42cd46236e5e",
+  "meta": {
+    "instanceId": "0691fca06e6547a651254e07c6ef0c6d2442230007b34f0083d349101bd4ffc2"
+  },
+  "id": "BvC7n5D2Nbkndj7A",
+  "tags": []
+}
